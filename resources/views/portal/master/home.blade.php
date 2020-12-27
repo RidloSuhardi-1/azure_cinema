@@ -20,6 +20,10 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 </head>
@@ -43,29 +47,29 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
-      <!-- User Setting Dropdown -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <div class="user-panel image d-sm-inline-block">
-            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle pr-2" alt="User Image">
-            Jonathan Burke Jr. <i class="fas fa-angle-down ml-2"></i>
-          </div>
-        </a>
+        <!-- User Setting Dropdown -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <div class="user-panel image d-sm-inline-block">
+                    <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle pr-2" alt="User Image">
+                    Jonathan Burke Jr. <i class="fas fa-angle-down ml-2"></i>
+                </div>
+            </a>
 
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-header">Hai Jonathan Burke Jr.</span>
-          <div class="dropdown-divider"></div>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <span class="dropdown-header">Hai Jonathan Burke Jr.</span>
+            <div class="dropdown-divider"></div>
 
-          <a href="/user_settings" class="dropdown-item">
-            <i class="fas fa-user-cog mr-2"></i> Account Settings
-          </a>
+            <a href="/user_settings" class="dropdown-item">
+                <i class="fas fa-user-cog mr-2"></i> Account Settings
+            </a>
 
-          <div class="dropdown-divider"></div>
-          <a href="/logout" class="dropdown-item bg-danger">
-            <i class="fas fa-sign-out-alt mr-2"></i> Log Out
-          </a>
-        </div>
-      </li>
+            <div class="dropdown-divider"></div>
+                <a href="/logout" class="dropdown-item bg-danger">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                </a>
+            </div>
+        </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -80,17 +84,17 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group mt-2" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group mt-2" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -178,8 +182,8 @@
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('cinemas') ? 'menu-open' : '' }} {{ Route::is('films') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }} {{ Route::is('films') ? 'active' : '' }} ">
+          <li class="nav-item {{ Route::is('cinemas') ? 'menu-open' : '' }} {{ Route::is('films') ? 'menu-open' : '' }} {{ Route::is('cinema.search') ? 'menu-open' : '' }} {{ Route::is('film.search') ? 'menu-open' : '' }} {{ Route::is('seats') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }} {{ Route::is('films') ? 'active' : '' }} {{ Route::is('cinema.search') ? 'active' : '' }} {{ Route::is('film.search') ? 'active' : '' }} {{ Route::is('seats') ? 'active' : '' }}">
               <i class="nav-icon fas fa-database"></i>
               <p>
                 Manage Items
@@ -189,14 +193,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/cinemas" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }}">
+                <a href="/cinemas" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }} {{ Route::is('cinema.search') ? 'active' : '' }} {{ Route::is('seats') ? 'active' : '' }}">
                     <i class="fas fa-landmark nav-icon"></i>
                   <p>Manage Cinemas</p>
                   <span class="badge badge-danger right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/films" class="nav-link {{ Route::is('films') ? 'active' : '' }}">
+                <a href="/films" class="nav-link {{ Route::is('films') ? 'active' : '' }} {{ Route::is('film.search') ? 'active' : '' }}">
                   <i class="fas fa-film nav-icon"></i>
                   <p>Manage Films</p>
                   <span class="badge badge-danger right">6</span>
@@ -206,8 +210,8 @@
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('ticket') ? 'menu-open' : '' }} {{ Route::is('promote_code') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ Route::is('ticket') ? 'active' : '' }} {{ Route::is('promote_code') ? 'active' : '' }}">
+          <li class="nav-item {{ Route::is('tickets') ? 'menu-open' : '' }} {{ Route::is('codes') ? 'menu-open' : '' }} {{ Route::is('code.search') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('tickets') ? 'active' : '' }} {{ Route::is('codes') ? 'active' : '' }} {{ Route::is('code.search') ? 'active' : '' }}">
               <i class="nav-icon fas fa-clipboard-list"></i>
               <p>
                 Ticket Management
@@ -217,14 +221,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/ticket" class="nav-link {{ Route::is('ticket') ? 'active' : '' }}">
+                <a href="/tickets" class="nav-link {{ Route::is('tickets') ? 'active' : '' }}">
                   <i class="fas fa-ticket-alt nav-icon"></i>
                   <p>Ticket</p>
                   <span class="badge badge-danger right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/promote_code" class="nav-link {{ Route::is('promote_code') ? 'active' : '' }}">
+                <a href="/codes" class="nav-link {{ Route::is('codes') ? 'active' : '' }} {{ Route::is('code.search') ? 'active' : '' }}">
                   <i class="fas fa-receipt nav-icon"></i>
                   <p>Promote Code</p>
                   <span class="badge badge-danger right">6</span>
@@ -235,7 +239,7 @@
           <!-- /.nav-item -->
 
           <li class="nav-item">
-            <a href="/transaction" class="nav-link {{ Route::is('transaction') ? 'active' : '' }}">
+            <a href="/transactions" class="nav-link {{ Route::is('transactions') ? 'active' : '' }} {{ Route::is('searchTransaction') ? 'active' : '' }}">
               <i class="nav-icon fas fa-barcode"></i>
               <p>Manage Transaction</p>
             </a>
@@ -274,6 +278,10 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- SweetAlert2 -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
 <!-- AdminLTE App -->
@@ -286,12 +294,12 @@
 <script src="{{ asset('plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
 <!-- ChartJS -->
-<script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+<!-- <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script> -->
 
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>
+{{-- <script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script> --}}
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -302,11 +310,6 @@
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })
-  });
-
-   // reset form modal
-  $('.modal').on('hidden.bs.modal', function(){
-    $(this).find('form')[0].reset();
   });
 
   // read url create
@@ -335,23 +338,127 @@
     }
   };
 
-  // img input create
-  $("#imgInput_create").change(function(){
-      $("#fileName_create").text(this.files[0].name);
-    });
 
-  $("#imgInput_create").change(function(){
-      readURL_create(this);
-  });
 
-  // img input update
-  $("#imgInput_update").change(function(){
-      $("#fileName_update").text(this.files[0].name);
-    });
-
-  $("#imgInput_update").change(function(){
-      readURL_update(this);
-  });
 </script>
+
+<!-- customize script for modal -->
+<script>
+    $(document).ready(function() {
+
+        // img input create
+        $("#imgInput_create").change(function(){
+            $("#fileName_create").text(this.files[0].name);
+            });
+
+        $("#imgInput_create").change(function(){
+            readURL_create(this);
+        });
+
+        // img input update
+        $("#imgInput_update").change(function(){
+            $("#fileName_update").text(this.files[0].name);
+            });
+
+        $("#imgInput_update").change(function(){
+            readURL_update(this);
+        });
+
+        // view modal
+        $('#view').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var id = button.data('id')
+            var name = button.data('name')
+            var image = button.data('img')
+            var desc = button.data('desc')
+            var location = button.data('location')
+
+            // additional var for items
+            var genre = button.data('genre')
+            var label = button.data('lbl')
+            var label_class = button.data('lbl-class')
+
+            var modal = $(this)
+
+            modal.find('.modal-header #name').text(name)
+            modal.find('.table #name').text(name)
+            modal.find('.table #genre').append(genre)
+            modal.find('.table #desc').text(desc)
+            modal.find('.table #location').text(location)
+
+            modal.find('.modal-body .ribbon-wrapper div').removeClass().addClass('ribbon').addClass(label_class)
+            modal.find('.modal-body .ribbon').text(label)
+            modal.find('.modal-body #image').attr('src', image)
+
+
+
+            modal.find('.modal-body p').text("Are you sure want to remove \'" + name + "\' ?")
+            modal.find('.modal-footer #remove-btn').attr("onclick", "window.location.href = '" + id + "';")
+        });
+
+        // reset form modal
+        $('.modal').on('hidden.bs.modal', function(){
+            $(".table #genre:not(:empty)").empty(); // this is remove genre lists on film modal view
+            $(this).find('form')[0].reset();
+
+            // niat ngremove class pas wis dihidden
+        });
+
+        // remove modal
+        $('#remove').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var id = button.data('id')
+            var name = button.data('name')
+
+            var modal = $(this)
+
+            modal.find('.modal-body p').text("Are you sure want to remove \'" + name + "\' ?")
+            modal.find('.modal-footer #remove-btn').attr("onclick", "window.location.href = '" + id + "';")
+        });
+
+        // getting text based on select value
+        $('#searchBy').change(function (event) {
+            var key = $('#searchBy option').filter(':selected').val();
+            var visibleKey = $('#searchBy option:selected').text();
+
+            // send this to action form attribute
+            $('form#search').attr("action", key);
+            // send this to input with id #search-input
+            $('input#search-input').attr("placeholder", "Search by " + visibleKey);
+        });
+    });
+</script>
+
+{{-- alert --}}
+<script>
+    // sweetalert2 alert
+    $(function() {
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+@if(Session::has('success'))
+
+    Toast.fire({
+        icon: 'success',
+        title: '{{ Session::get('success') }}'
+    })
+
+@elseif(Session::has('errors'))
+
+    Toast.fire({
+        icon: 'error',
+        title: 'Failed to save, make sure the data entered is correct.'
+    })
+
+@endif
+    });
+</script>
+
+@section('script')
+@show
+
 </body>
 </html>
