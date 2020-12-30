@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/portal">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
                 <li class="breadcrumb-item">Items</li>
                 <li class="breadcrumb-item active"><a href="/usermanage">Manage</a></li>
                 </ol>
@@ -47,12 +47,12 @@
                   <!-- /.nav -->
                 </div>
                 <!-- /.col -->
-                <form action="{{ route('customer.search', 'username') }}" id="search">
+                <form action="{{ route('customer.search', 'email') }}" id="search">
                 <div class="col">
 
                         <div class="input-group input-group-sm float-right" style="width: 180px;">
 
-                            <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Name">
+                            <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Email">
 
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
@@ -65,11 +65,12 @@
                     <!-- /.input-group -->
                 </div>
                 </form>
+                
                 <!-- /.col -->
 
                 <div class="col col-3">
                   <select id="searchBy" class="form-control form-control-sm select2">
-                    <option value="{{ route('customer.search', 'username') }}" selected="selected">Name</option>
+                    <option value="{{ route('customer.search', 'username') }}" selected="selected">Username</option>
                     <option value="{{ route('customer.search', 'email') }}">Email</option>
                   </select>
                 </div>

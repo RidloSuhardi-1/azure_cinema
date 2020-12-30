@@ -52,23 +52,28 @@
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <div class="user-panel image d-sm-inline-block">
                     <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle pr-2" alt="User Image">
-                    Jonathan Burke Jr. <i class="fas fa-angle-down ml-2"></i>
+                    {{ Auth::user()->username }}  <i class="fas fa-angle-down ml-2"></i>
                 </div>
             </a>
 
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-header">Hai Jonathan Burke Jr.</span>
+                <span class="dropdown-header">Hi!!! {{ Auth::user()->username }} </span>
             <div class="dropdown-divider"></div>
 
             <a href="/user_settings" class="dropdown-item">
                 <i class="fas fa-user-cog mr-2"></i> Account Settings
             </a>
-
+            
             <div class="dropdown-divider"></div>
-                <a href="/logout" class="dropdown-item bg-danger">
+                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                    class="dropdown-item bg-danger">
                     <i class="fas fa-sign-out-alt mr-2"></i> Log Out
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
             </div>
+            
         </li>
     </ul>
   </nav>
@@ -110,10 +115,10 @@
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('members') ? 'menu-open' : '' }} {{ Route::is('waiting_members') ? 'menu-open' : '' }} {{ Route::is('recently_members') ? 'menu-open' : '' }}">
+          <li class="nav-item {{ Route::is('members') ? 'menu-open' : '' }} {{ Route::is('waiting.members') ? 'menu-open' : '' }} {{ Route::is('recently.members') ? 'menu-open' : '' }}">
             <!-- Nav Member -->
             <a href="#"
-              class="nav-link {{ Route::is('members') ? 'active' : '' }} {{ Route::is('waiting_members') ? 'active' : '' }} {{ Route::is('recently_members') ? 'active' : '' }}">
+              class="nav-link {{ Route::is('members') ? 'active' : '' }} {{ Route::is('waiting.members') ? 'active' : '' }} {{ Route::is('recently.members') ? 'active' : '' }}">
               <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Manage Members
@@ -123,20 +128,7 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/waiting_members" class="nav-link {{ Route::is('waiting_members') ? 'active' : '' }}">
-                  <i class="fas fa-user-clock nav-icon"></i>
-                  <p>Waiting to Approve</p>
-                  <span class="badge badge-info right">6</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/recently_members" class="nav-link {{ Route::is('recently_members') ? 'active' : '' }}">
-                  <i class="fas fa-user-check nav-icon"></i>
-                  <p>Recently Added</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/members" class="nav-link {{ Route::is('members') ? 'active' : '' }}">
+                <a href="{{Route('members')}}" class="nav-link {{ Route::is('members') ? 'active' : '' }}">
                   <i class="fas fa-users nav-icon"></i>
                   <p>All Members</p>
                   <span class="badge badge-info right">6</span>

@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
 
 //-----------------------Customer login----------------------------//
 Auth::routes();
@@ -19,7 +19,7 @@ Route::get('/login_consumer', 'UserController@indexLogin');
 Route::post('/hhhh', 'UserController@login');
 Route::get('/register_consumer', 'UserController@indexRegister');
 Route::post('/proses', 'UserController@register');
-Route::post('/logout', 'UserController@logout');
+Route::post('/logout_consumer', 'UserController@logout');
 
 //--------------------------Customers All logic------------------------//
 Route::post('/customer/store', 'ManageUserController@store');
@@ -42,12 +42,24 @@ Route::post('/free_customer/id/{id}/update', 'ManageUserController@update');
 Route::get('/free_customer/id/{id}/destroy', 'ManageUserController@destroy');
 Route::get('/free_customer/search/{key}', 'ManageUserController@search')->name('customerfree.search');
 
-//--------------------------Manage Customer-------------------------//
+//--------------------------Manage All Customer-------------------------//
  Route::get('/free_customers','ManageUserController@show')->name('customers.free');
  Route::get('/premium_customers','ManageUserController@showpremium')->name('customers.premium');
  Route::get('/usermanage', 'ManageUserController@manage')->name('customers');
-// ------------------------- Landing---------------------------- //
-Route::get('/portal', function() {
+
+//--------------------------Manage All Member------------------------------//
+Route::get('/membermanage', 'ManageMemberController@manage')->name('members');
+
+//--------------------------Members All Logic-----------------------------//
+Route::post('/member/store', 'ManageMemberController@store');
+Route::get('/member/id/{id}/edit', 'ManageMemberController@viewUpdate');
+Route::post('/member/id/{id}/update', 'ManageMemberController@update');
+Route::get('/member/id/{id}/destroy', 'ManageMemberController@destroy');
+Route::get('/member/search/{key}', 'ManageMemberController@search')->name('member.search');
+
+
+ // ------------------------- Landing---------------------------- //
+Route::get('/', function() {
     return view('portal.index');
 });
 
@@ -168,7 +180,7 @@ Route::get('/dash', function() {
 
 // // PORTAL
 
-// Route::get('/portal', function() {
+// Route::get('/portalEmployee', function() {
 //     return view('portal.pages.index');
 // })->name('home');
 
@@ -250,7 +262,5 @@ Route::get('/dash', function() {
 //     return view('portal.pages.login');
 // })->name('login');
 
-// Route::get('/logout', function() {
-//     return view('portal.index');
-// })->name('user_settings');
+
 

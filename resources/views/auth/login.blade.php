@@ -17,9 +17,9 @@
       <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="input-group mb-3">
-        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Username">
+        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
 
-        @error('username')
+        @error('email')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
@@ -59,14 +59,15 @@
           </div>
           <!-- /.col -->
         </div>
-      </form>
-
-      <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="/home" class="btn btn-block btn-primary">
+        <div class="social-auth-links text-center mt-2 mb-3">
+        <button class="btn btn-block btn-primary">
           <i class="fas fa-sign-in-alt mr-2"></i> Login
-        </a>
+        </button>
+        @if (session('info'))
+        <div class="alert alert-danger">{{session('info')}}</div>
+          @endif
       </div>
-
+      </form>
         <a href="/">Back to landing</a>
         <a href="/register" class="float-right">Register a new account</a>
     </div>

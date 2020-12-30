@@ -67,9 +67,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         if($data['roles']=='Members'){
-            $status='unverivied';
+            $status='unverified';
         }else{
-            $status='verivied';
+            $status='verified';
         }
         return User::create([
             'username' => $data['username'],
