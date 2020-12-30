@@ -154,7 +154,6 @@ class CinemaController extends Controller
 
         $seats = $cinemas->seats->where('cinema_id', $decrypt_id);
         $seats->each->delete();
-
         $cinemas->delete();
 
         return redirect('/cinemas')->withSuccess('Data deleted successfully');

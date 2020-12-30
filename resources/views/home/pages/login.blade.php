@@ -13,9 +13,10 @@
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="#" method="post">
+      <form action="/hhhh" method="POST">
+      @csrf
         <div class="input-group mb-3">
-          <input type="Username" class="form-control" placeholder="Username">
+          <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -23,7 +24,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" name="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -41,13 +42,10 @@
           </div>
           <!-- /.col -->
         </div>
-      </form>
-
-      <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="/home" class="btn btn-block btn-primary">
-          <i class="fas fa-sign-in-alt mr-2"></i> Login
-        </a>
+        <div class="social-auth-links text-center mt-2 mb-3">
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
       </div>
+      </form>
 
         <a href="/">Back to landing</a>
         <a href="/register" class="float-right">Register a new account</a>

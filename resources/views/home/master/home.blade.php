@@ -71,6 +71,11 @@
                             <div class="btn-group">
                                 <a class="btn-theme btn mr-1" href="/login_consumer"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Login</a>
                                 <a class="btn-theme btn" href="/register_consumer"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a>
+                                &nbsp;&nbsp;
+                                <form action="/logout" method="POST">
+                                @csrf
+                                <button class="btn-theme btn" type="submit"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Logout</button>
+                                </form>
                             </div>
                         </div>
                     </div>

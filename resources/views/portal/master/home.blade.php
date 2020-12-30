@@ -146,9 +146,9 @@
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('customers') ? 'menu-open' : '' }} {{ Route::is('free_customers') ? 'menu-open' : '' }} {{ Route::is('premium_customers') ? 'menu-open' : '' }}">
+          <li class="nav-item {{ Route::is('customers') ? 'menu-open' : '' }} {{ Route::is('customers.free') ? 'menu-open' : '' }} {{ Route::is('customers.premium') ? 'menu-open' : '' }}">
             <!-- Nav Member -->
-            <a href="#" class="nav-link {{ Route::is('customers') ? 'active' : '' }} {{ Route::is('free_customers') ? 'active' : '' }} {{ Route::is('premium_customers') ? 'active' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('customers') ? 'active' : '' }} {{ Route::is('customers.free') ? 'active' : '' }} {{ Route::is('customers.premium') ? 'active' : '' }}">
               <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Manage Customers
@@ -158,21 +158,21 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/free_customers" class="nav-link {{ Route::is('free_customers') ? 'active' : '' }}">
+                <a href="{{ Route('customers.free') }}" class="nav-link {{ Route::is('customers.free') ? 'active' : '' }}">
                   <i class="fas fa-star nav-icon"></i>
                   <p>Free Customers</p>
                   <span class="badge badge-primary right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/premium_customers" class="nav-link {{ Route::is('premium_customers') ? 'active' : '' }}">
+                <a href="{{ Route('customers.premium') }}" class="nav-link {{ Route::is('customers.premium') ? 'active' : '' }}">
                   <i class="fas fa-medal nav-icon"></i>
                   <p>Premium Customers</p>
                   <span class="badge badge-primary right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/customers" class="nav-link {{ Route::is('customers') ? 'active' : '' }}">
+                <a href="{{ Route('customers') }}" class="nav-link {{ Route::is('customers') ? 'active' : '' }}">
                   <i class="fas fa-users nav-icon"></i>
                   <p>All Customers</p>
                   <span class="badge badge-primary right">6</span>

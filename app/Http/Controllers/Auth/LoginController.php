@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Gate;
 
 class LoginController extends Controller
 {
@@ -33,8 +34,12 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // { 
+    //     $this->middleware('guest')->except('logout');
+    //     $this->middleware(function($request, $next){
+    //         if(Gate::allows('login-employee')) return $next($request);
+    //         abort(403, 'Anda tidak memiliki cukup hak akses');
+    //         });
+    // }
 }

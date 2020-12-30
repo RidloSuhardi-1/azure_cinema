@@ -11,25 +11,50 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
+//-----------------------Customer login----------------------------//
+Auth::routes();
+Route::get('/login_consumer', 'UserController@indexLogin');
+Route::post('/hhhh', 'UserController@login');
+Route::get('/register_consumer', 'UserController@indexRegister');
+Route::post('/proses', 'UserController@register');
+Route::post('/logout', 'UserController@logout');
 
-// Portal
+//--------------------------Customers All logic------------------------//
+Route::post('/customer/store', 'ManageUserController@store');
+Route::get('/customer/id/{id}/edit', 'ManageUserController@viewUpdate');
+Route::post('/customer/id/{id}/update', 'ManageUserController@update');
+Route::get('/customer/id/{id}/destroy', 'ManageUserController@destroy');
+Route::get('/customer/search/{key}', 'ManageUserController@search')->name('customer.search');
 
+//--------------------------Customers Premium Logic-------------------//
+Route::post('/premium_customer/store', 'ManageUserController@store');
+Route::get('/premium_customer/id/{id}/edit', 'ManageUserController@viewUpdate');
+Route::post('/premium_customer/id/{id}/update', 'ManageUserController@update');
+Route::get('/premium_customer/id/{id}/destroy', 'ManageUserController@destroy');
+Route::get('/premium_customer/search/{key}', 'ManageUserController@search')->name('customerpremium.search');
+
+//--------------------------Customers Free Logic-------------------//
+Route::post('/free_customer/store', 'ManageUserController@store');
+Route::get('/free_customer/id/{id}/edit', 'ManageUserController@viewUpdate');
+Route::post('/free_customer/id/{id}/update', 'ManageUserController@update');
+Route::get('/free_customer/id/{id}/destroy', 'ManageUserController@destroy');
+Route::get('/free_customer/search/{key}', 'ManageUserController@search')->name('customerfree.search');
+
+//--------------------------Manage Customer-------------------------//
+ Route::get('/free_customers','ManageUserController@show')->name('customers.free');
+ Route::get('/premium_customers','ManageUserController@showpremium')->name('customers.premium');
+ Route::get('/usermanage', 'ManageUserController@manage')->name('customers');
 // ------------------------- Landing---------------------------- //
-
 Route::get('/portal', function() {
     return view('portal.index');
 });
 
-// ------------------------- Cinema---------------------------- //
+//-------------------------Manage User--------------------------//
 
+
+// ------------------------- Cinema---------------------------- //
 Route::get('/cinemas', 'CinemaController@viewCinemas')->name('cinemas');
 Route::get('/cinema/id/{id}/edit', 'CinemaController@viewUpdate');
 
@@ -97,9 +122,9 @@ Route::get('/transaction/search/{key}', 'TransactController@search')->name('tran
 
 // CUSTOMER
 
-// Route::get('/dash', function() {
-//     return view('home.index');
-// });
+Route::get('/dash', function() {
+    return view('home.index');
+});
 
 // Route::get('/login_consumer', function() {
 //     return view('home.pages.login');

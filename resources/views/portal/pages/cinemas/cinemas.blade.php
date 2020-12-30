@@ -113,7 +113,6 @@
                     <td>{{ $value->cinema_name }}</td>
                     <td>{{ $value->location }}</td>
                     <td class="text-center">
-
                         <button onclick="window.location.href = '{{ route('seats', Crypt::encrypt($value->cinema_id)) }}';" class="btn btn-outline-primary btn-sm">
                             Seats - {{ $value->seats->count() }}
                         </button>
