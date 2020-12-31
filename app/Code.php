@@ -12,7 +12,7 @@ class Code extends Model
      * @var array
      */
     protected $fillable = [
-        'code_name', 'code', 'value', 'customer_type', 'expired',
+        'code_name', 'code', 'value', 'minimum', 'customer_type', 'expired',
     ];
 
     /**

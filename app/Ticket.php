@@ -23,19 +23,21 @@ class Ticket extends Model
     protected $primaryKey = 'ticket_id';
 
     /**
-     * Get the film record associated with the ticket.
-     */
-    public function film()
-    {
-        return $this->hasOne('App\Film', 'item_id', 'item_id');
-    }
-
-    /**
      * Get the cinema record associated with the ticket.
      */
     public function cinema()
     {
         return $this->hasOne('App\Cinema', 'cinema_id', 'cinema_id');
+    }
+
+    public function film()
+    {
+        return $this->belongsTo('App\Film', 'item_id', 'item_id');
+    }
+
+    public function transaction()
+    {
+        return $this->belongsTo('App\Transaction', 'ticket_id', 'ticket_id');
     }
 
 }

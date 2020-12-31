@@ -42,12 +42,12 @@ class CinemaController extends Controller
         $validator = Validator::make($input, [
             'cinema_name' => ['required', 'min:5'],
             'location' => ['required', 'min:5'],
-            'desc' => ['max:500'],
+            'desc' => ['max:255'],
             'image' => ['max: 4096', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
-            return redirect('/cinemas')
+            return redirect()->route('cinemas')
                         ->withErrors($validator)
                         ->withInput();
         }
@@ -66,7 +66,7 @@ class CinemaController extends Controller
 
         Cinema::create($input);
 
-        return redirect('/cinemas')->withSuccess('Data saved successfully');
+        return redirect()->route('cinemas')->withSuccess('Data saved successfully');
     }
 
     public function update(Request $request, $id)
@@ -83,12 +83,12 @@ class CinemaController extends Controller
         $validator = Validator::make($input, [
             'cinema_name' => ['required', 'min:5'],
             'location' => ['required', 'min:5'],
-            'desc' => ['max:500'],
+            'desc' => ['max:255'],
             'image' => ['max:4096', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
-            return redirect('/cinema/id/'.$id.'/edit')
+            return redirect()->route('cinema.edit', $id)
                         ->withErrors($validator)
                         ->withInput();
         }
@@ -123,7 +123,7 @@ class CinemaController extends Controller
 
         $cinemas->save();
 
-        return redirect('/cinemas')->withSuccess('Data has been successfully changed');
+        return redirect()->route('cinemas')->withSuccess('Data has been successfully changed');
 
     }
 
@@ -154,10 +154,13 @@ class CinemaController extends Controller
 
         $seats = $cinemas->seats->where('cinema_id', $decrypt_id);
         $seats->each->delete();
+
         $cinemas->delete();
 
-        return redirect('/cinemas')->withSuccess('Data deleted successfully');
+        return redirect()->route('cinemas')->withSuccess('Data deleted successfully');
     }
+
+    // search
 
     public function search(Request $request, $key)
     {

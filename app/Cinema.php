@@ -28,6 +28,6 @@ class Cinema extends Model
 
      public function seats()
      {
-         return $this->hasMany('App\Seat', 'cinema_id', 'cinema_id')->select(array('cinema_id'));
+         return $this->hasMany('App\Seat', 'cinema_id', 'cinema_id');
      }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    protected $table='members';
+    protected $table = 'members';
     /**
      * The attributes that are mass assignable.
      *
@@ -23,4 +23,10 @@ class Member extends Model
     protected $hidden = [
         'password',
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo('App\Transaction', 'customer_id');
+    }
+
 }

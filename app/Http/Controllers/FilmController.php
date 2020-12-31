@@ -55,12 +55,14 @@ class FilmController extends Controller
         $validator = Validator::make($input, [
             'item_name' => ['required', 'min:5'],
             'genre' => ['required'],
-            'desc' => ['required', 'min:5'],
+            'desc' => ['required', 'min:10'],
+            'time' => ['required', 'numeric'],
+            'trailer' => ['min:20'],
             'image' => ['max:4096', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
-            return redirect('/films')
+            return redirect()->route('films')
                         ->withErrors($validator)
                         ->withInput();
         }
@@ -84,7 +86,7 @@ class FilmController extends Controller
 
         Film::create($input);
 
-        return redirect('/films')->withSuccess('Data saved successfully');
+        return redirect()->route('films')->withSuccess('Data saved successfully');
     }
 
     public function update(Request $request, $id)
@@ -102,11 +104,13 @@ class FilmController extends Controller
             'item_name' => ['required', 'min:5'],
             'genre' => ['required'],
             'desc' => ['required', 'min:10'],
+            'time' => ['required', 'numeric'],
+            'trailer' => ['min:20'],
             'image' => ['max:4096', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
-            return redirect('/film/id/'.$id.'/edit')
+            return redirect()->route('film.edit', $id)
                         ->withErrors($validator)
                         ->withInput();
         }
@@ -144,11 +148,13 @@ class FilmController extends Controller
         $films->item_name = $request->item_name;
         $films->genre = $request->genre;
         $films->desc = $request->desc;
+        $films->time = $request->time;
+        $films->trailer = $request->trailer;
         $films->label = $request->label;
 
         $films->save();
 
-        return redirect('/films')->withSuccess('Data has been successfully changed');
+        return redirect()->route('films')->withSuccess('Data has been successfully changed');
     }
 
     public function destroy($id)
@@ -160,7 +166,7 @@ class FilmController extends Controller
 
         $films->delete();
 
-        return redirect('/films')->withSuccess('Data deleted successfully');
+        return redirect()->route('films')->withSuccess('Data deleted successfully');
     }
 
     public function search(Request $request, $key)

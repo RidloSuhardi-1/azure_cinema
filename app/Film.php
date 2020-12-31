@@ -12,7 +12,7 @@ class Film extends Model
      * @var array
      */
     protected $fillable = [
-        'item_name', 'genre', 'image', 'desc', 'label',
+        'item_name', 'genre', 'image', 'desc', 'time', 'trailer', 'label',
     ];
 
     /**
@@ -21,4 +21,12 @@ class Film extends Model
      * @var string
      */
     protected $primaryKey = 'item_id';
+
+    /**
+     * Get the ticket record associated with the ticket.
+     */
+    public function ticket()
+    {
+        return $this->hasOne('App\Ticket', 'item_id', 'item_id');
+    }
 }

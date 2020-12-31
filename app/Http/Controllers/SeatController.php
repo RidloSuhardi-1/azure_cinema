@@ -15,7 +15,7 @@ class SeatController extends Controller
         // decrypt id request
 
         $decrypt_id = \Crypt::decrypt($id);
-        $seats = Seat::where('cinema_id', $decrypt_id)->paginate(5);
+        $seats = Seat::where('cinema_id', $decrypt_id)->orderBy('seat_name','asc')->paginate(5);
 
         $cinemas = \App\Cinema::find($decrypt_id);
 
@@ -53,14 +53,14 @@ class SeatController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/cinema/id/'.$id.'/seats')
+            return redirect()->route('seats', $id)
                         ->withErrors($validator)
                         ->withInput();
         }
 
         Seat::create($input);
 
-        return redirect('/cinema/id/'.$id.'/seats')->withSuccess('Data saved successfully');
+        return redirect()->route('seats', $id)->withSuccess('Data saved successfully');
     }
 
     public function update(Request $request, $id)
@@ -81,7 +81,7 @@ class SeatController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/cinema/seat/id/'.$id.'/edit')
+            return redirect()->route('seat.edit', $id)
                         ->withErrors($validator)
                         ->withInput();
         }
@@ -92,7 +92,7 @@ class SeatController extends Controller
 
         $seats->save();
 
-        return redirect('/cinema/id/'.$cinemaID.'/seats')->withSuccess('Data has been successfully changed');
+        return redirect()->route('seats', $cinemaID)->withSuccess('Data has been successfully changed');
     }
 
     public function destroy($id)
@@ -112,6 +112,6 @@ class SeatController extends Controller
 
          $seats->delete();
 
-         return redirect('/cinema/id/'.$cinemaID.'/seats')->withSuccess('Seat data deleted successfully');
+         return redirect()->route('seats', $cinemaID)->withSuccess('Seat data deleted successfully');
     }
 }

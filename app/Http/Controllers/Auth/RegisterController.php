@@ -42,7 +42,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -71,6 +71,7 @@ class RegisterController extends Controller
         }else{
             $status='verified';
         }
+
         return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
@@ -78,6 +79,7 @@ class RegisterController extends Controller
             'roles' => $data['roles'],
             'status' => $status,
         ]);
+        
         return redirect('portal.pages.login');
     }
 }

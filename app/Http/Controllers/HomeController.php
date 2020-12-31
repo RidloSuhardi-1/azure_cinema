@@ -3,18 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Ticket;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     /**
      * Show the application dashboard.
@@ -23,7 +15,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('portal.pages.index');
-        
+        $home = Ticket::where('broadcast_date', '>', date('Y-m-d'))->get();
+        $soon = \App\Film::where('label', 'soon')->get();
+
+        $data = array('tickets' => $home, 'comingsoon' => $soon);
+
+        return view('home.index')->with($data);
     }
 }

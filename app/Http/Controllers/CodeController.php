@@ -42,20 +42,21 @@ class CodeController extends Controller
         $validator = Validator::make($input, [
             'code_name' => ['required', 'min:5'],
             'value' => ['required', 'numeric'],
+            'minimum' => ['required', 'min:1', 'numeric'],
             'code' => ['required', 'min:5'],
             'expired' => ['required'],
             'customer_type' => ['required'],
         ]);
 
         if ($validator->fails()) {
-            return redirect('/codes')
+            return redirect()->route('codes')
                         ->withErrors($validator)
                         ->withInput();
         }
 
         Code::create($input);
 
-        return redirect('/codes')->withSuccess('Data saved successfully');
+        return redirect()->route('codes')->withSuccess('Data saved successfully');
     }
 
     public function destroy($id)
@@ -67,7 +68,7 @@ class CodeController extends Controller
 
         $codes->delete();
 
-        return redirect('/codes')->withSuccess('Data deleted successfully');
+        return redirect()->route('codes')->withSuccess('Data deleted successfully');
     }
 
     public function search(Request $request, $key)

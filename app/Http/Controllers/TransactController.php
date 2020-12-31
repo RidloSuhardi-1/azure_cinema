@@ -13,13 +13,17 @@ class TransactController extends Controller
     {
         $trx = Transaction::paginate(5);
 
-        $data = array('trx' => $trx);
+        $data = array('transaction' => $trx);
 
         return view('portal.pages.management.transaction')->with($data);
     }
 
     public function add()
     {
+        $tickets = \App\Ticket::all();
+
+        $data = array('tickets' => $tickets);
+
         return view('portal.pages.management.forms.add')->with($data);
     }
 }

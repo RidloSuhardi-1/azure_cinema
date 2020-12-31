@@ -14,7 +14,9 @@ class TicketController extends Controller
     {
         $tickets = Ticket::paginate(5);
         $cinemas = \App\Cinema::orderBy('cinema_name', 'ASC')->get();
-        $films = \App\Film::orderBy('item_name', 'ASC')->get();
+
+        $films = \App\Film::where('label', 'standart')
+                        ->orWhere('label', 'premium')->get();
 
         $data = array('tickets' => $tickets, 'cinemas' => $cinemas, 'films' => $films);
 
@@ -39,14 +41,14 @@ class TicketController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/tickets')
+            return redirect()->route('tickets')
                         ->withErrors($validator)
                         ->withInput();
         }
 
         Ticket::create($input);
 
-        return redirect('/tickets')->withSuccess('Data saved successfully');
+        return redirect()->route('tickets')->withSuccess('Data saved successfully');
     }
 
     public function destroy($id)
@@ -58,6 +60,6 @@ class TicketController extends Controller
 
         $tickets->delete();
 
-        return redirect('/tickets');
+        return redirect()->route('tickets')->withSuccess('Data deleted successfully');
     }
 }
