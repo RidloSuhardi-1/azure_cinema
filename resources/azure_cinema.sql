@@ -29,7 +29,7 @@ CREATE TABLE `cinemas` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`cinema_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `codes` */
 
@@ -38,45 +38,15 @@ DROP TABLE IF EXISTS `codes`;
 CREATE TABLE `codes` (
   `code_id` int(11) NOT NULL AUTO_INCREMENT,
   `code_name` varchar(50) NOT NULL,
-  `code` varchar(15) NOT NULL,
+  `code` varchar(50) NOT NULL,
   `value` float NOT NULL,
-  `customer_type` varchar(15) NOT NULL,
+  `minimum` float NOT NULL,
+  `customer_type` varchar(50) NOT NULL,
   `expired` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`code_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
-
-/*Table structure for table `customers` */
-
-DROP TABLE IF EXISTS `customers`;
-
-CREATE TABLE `customers` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  PRIMARY KEY (`customer_id`),
-  KEY `FK_Customers_userid` (`id_user`),
-  CONSTRAINT `FK_Customers_userid` FOREIGN KEY (`id_user`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Table structure for table `employees` */
-
-DROP TABLE IF EXISTS `employees`;
-
-CREATE TABLE `employees` (
-  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) DEFAULT NULL,
-  `name` varchar(50) DEFAULT NULL,
-  `gender` char(5) DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL,
-  `profile_img` varchar(200) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`employee_id`),
-  KEY `FK_Employees_userid` (`user_id`),
-  CONSTRAINT `FK_Employees_userid` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `films` */
 
@@ -87,12 +57,30 @@ CREATE TABLE `films` (
   `item_name` varchar(100) NOT NULL,
   `genre` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `desc` varchar(500) NOT NULL,
+  `desc` varchar(500) DEFAULT NULL,
+  `time` varchar(255) NOT NULL,
+  `trailer` varchar(255) DEFAULT NULL,
   `label` varchar(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+
+/*Table structure for table `members` */
+
+DROP TABLE IF EXISTS `members`;
+
+CREATE TABLE `members` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `roles` varchar(100) DEFAULT NULL,
+  `label` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `seats` */
 
@@ -107,7 +95,7 @@ CREATE TABLE `seats` (
   PRIMARY KEY (`seat_id`),
   KEY `FK_Cinema_seatsid` (`cinema_id`),
   CONSTRAINT `FK_Cinema_seatsid` FOREIGN KEY (`cinema_id`) REFERENCES `cinemas` (`cinema_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `tickets` */
 
@@ -128,7 +116,7 @@ CREATE TABLE `tickets` (
   KEY `FK_Tickets_cinemaid` (`cinema_id`),
   CONSTRAINT `FK_Tickets_cinemaid` FOREIGN KEY (`cinema_id`) REFERENCES `cinemas` (`cinema_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_Tickets_itemid` FOREIGN KEY (`item_id`) REFERENCES `films` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `transactions` */
 
@@ -137,9 +125,8 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `cinema` varchar(255) NOT NULL,
-  `seat` varchar(20) NOT NULL,
+  `ticket_id` int(11) DEFAULT NULL,
+  `seat_id` int(11) DEFAULT NULL,
   `qty` int(11) NOT NULL,
   `price_per_item` float NOT NULL,
   `total_price` float NOT NULL,
@@ -148,24 +135,29 @@ CREATE TABLE `transactions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`transaction_id`),
   KEY `FK_Transactions_customerid` (`customer_id`),
-  KEY `FK_Transactions_itemid` (`item_id`),
-  CONSTRAINT `FK_Transactions_customerid` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_Transactions_itemid` FOREIGN KEY (`item_id`) REFERENCES `films` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `FK_Transaction_ticketid` (`ticket_id`),
+  KEY `FK_Transaction_seatid` (`seat_id`),
+  CONSTRAINT `FK_Transaction_custid` FOREIGN KEY (`customer_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Transaction_seatid` FOREIGN KEY (`seat_id`) REFERENCES `seats` (`seat_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Transaction_ticketid` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `users` */
 
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `roles` varchar(10) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `roles` varchar(100) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
