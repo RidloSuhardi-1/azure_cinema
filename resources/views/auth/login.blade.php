@@ -9,7 +9,7 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="/" class="h1">Azure Cinema<br><b>PORTAL</b></a>
+      <a href="{{ route('portal') }}" class="h1">Azure Cinema<br><b>PORTAL</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
         @error('password')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -68,8 +68,8 @@
           @endif
       </div>
       </form>
-        <a href="/">Back to landing</a>
-        <a href="/register" class="float-right">Register a new account</a>
+        <a href="{{ route('portal') }}">Back to landing</a>
+        <a href="{{ route('register') }}" class="float-right">Register a new account</a>
     </div>
     <!-- /.card-body -->
   </div>

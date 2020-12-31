@@ -1,4 +1,4 @@
-@extends('portal.master.home')
+    @extends('portal.master.home')
 
 @section('title', 'Manage Members')
 
@@ -15,9 +15,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item">Items</li>
-                <li class="breadcrumb-item active"><a href="/membermanage">Manage</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('portal.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active">Members</li>
+                <li class="breadcrumb-item active"><a href="{{ route('members') }}">All Members</a></li>
                 </ol>
             </div>
             </div>
@@ -37,22 +37,25 @@
               <div class="row">
                 <div class="col">
                   <ul class="nav">
-                    <li class="nav-item mr-2">
-                    </li>
-                    <!-- /.nav-item -->
                     <li class="nav-item">
+                        <form action="#" target="_blank">
+                            <button type="button" class="btn btn-sm btn-success">
+                              <i class="fas fa-print mr-2"></i>
+                              Print Documents
+                            </button>
+                        </form>
                     </li>
                     <!-- /.nav-item -->
                   </ul>
                   <!-- /.nav -->
                 </div>
                 <!-- /.col -->
-                <form action="{{ route('member.search', 'email') }}" id="search">
-                <div class="col">
+                <form action="{{ route('member.search', 'username') }}" id="search">
+                    <div class="col">
 
                         <div class="input-group input-group-sm float-right" style="width: 180px;">
 
-                            <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Email">
+                            <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Username">
 
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
@@ -61,11 +64,10 @@
                             </div>
 
                         </div>
-
-                    <!-- /.input-group -->
-                </div>
+                        <!-- /.input-group -->
+                    </div>
                 </form>
-                
+
                 <!-- /.col -->
 
                 <div class="col col-3">
@@ -76,21 +78,21 @@
                 </div>
                 <!-- /.col -->
               </div>
-          <br><br>
-          <table class="table">
-            <thead class="thead-dark">
+
+          <table class="table table-bordered mt-2">
+            <thead>
                 <tr>
-                    <th width="50px" scope="col">ID</th>
-                    <th width="200px" scope="col">Username</th>
-                    <th width="200px" scope="col">Email</th>
-                    <th width="200px" scope="col">Roles</th>
-                    <th width="200px" scope="col">Action</th>
+                    <th class="text-center" scope="col">No</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $def)
+                @foreach ($users as $key => $def)
                 <tr>
-                    <th scope="row"> {{$def->id}}</th>
+                    <td class="text-center"> {{ $users->firstItem() + $key }}</th>
                     <td>{{ $def-> username}}</td>
                     <td>{{$def->email}}</td>
                     <td>{{$def -> roles}}</td>
@@ -198,7 +200,7 @@
     </section>
     <!-- /.content -->
   </div>
- 
+
 
 @endsection
 

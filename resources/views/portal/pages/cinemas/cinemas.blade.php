@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/portal">Home</a></li>
+                <li class="breadcrumb-item"><a href="/portal/home">Home</a></li>
                 <li class="breadcrumb-item">Items</li>
                 <li class="breadcrumb-item active"><a href="{{ route('cinemas') }}">Cinemas</a></li>
                 </ol>
@@ -113,6 +113,7 @@
                     <td>{{ $value->cinema_name }}</td>
                     <td>{{ $value->location }}</td>
                     <td class="text-center">
+
                         <button onclick="window.location.href = '{{ route('seats', Crypt::encrypt($value->cinema_id)) }}';" class="btn btn-outline-primary btn-sm">
                             Seats - {{ $value->seats->count() }}
                         </button>
@@ -125,10 +126,9 @@
                                 data-desc="{{ $value->desc }}"
                                 data-location="{{ $value->location }}"
                                 data-img="{{ $value->image != 'empty' ? asset('storage/'.$value->image) : asset('dist/img/default-150x150.png') }}" data-toggle="modal" data-target="#view"><i class="far fa-eye"></i></button>
-                          <button onclick="window.location.href = '/cinema/id/{{ Crypt::encrypt($value->cinema_id) }}/edit';" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                          <button type="button" class="btn btn-sm btn-danger" data-id="/cinema/id/{{ Crypt::encrypt($value->cinema_id) }}/destroy" data-name="{{ $value->cinema_name }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
-                          <!-- data-toggle="modal" data-target="#remove-cinemas" -->
-                          <!--  data-toggle="modal" data-target="#change-cinemas" -->
+
+                          <button onclick="window.location.href = '{{ route('cinema.edit', Crypt::encrypt($value->cinema_id)) }}'; " type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                          <button type="button" class="btn btn-sm btn-danger" data-id="{{ route('cinema.destroy', Crypt::encrypt($value->cinema_id)) }}" data-name="{{ $value->cinema_name }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
                       </div>
                     </td>
                   </tr>
@@ -211,7 +211,7 @@
                 </div>
                 <div class="modal-body">
                   <!-- Modal Body Start Here -->
-                  <form action="/cinema/store" method="POST" enctype="multipart/form-data">
+                  <form action="{{ route('cinema.store') }}" method="POST" enctype="multipart/form-data">
                   @csrf
                     <div class="form-group">
                         <label class="col-form-label" for="cinemaInput">Cinema Name</label>

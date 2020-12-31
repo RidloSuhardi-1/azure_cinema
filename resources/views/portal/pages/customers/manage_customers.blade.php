@@ -14,8 +14,8 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item active">Customers</li>
+                <li class="breadcrumb-item"><a href="{{ route('portal.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('customers') }}">Customers</a></li>
                 </ol>
             </div>
             </div>
@@ -36,38 +36,38 @@
                 <div class="col">
                   <ul class="nav">
                     <li class="nav-item mr-2">
-                        <form action="#" target="_blank">
-                            <button type="submit" class="btn btn-sm btn-success">
-                            <i class="fas fa-print mr-2"></i>
-                                Print Documents
-                            </button>
-                            <!-- button -->
-                        </form>
+                        <button onclick="location.href = '{{ route('customers.print') }}';" type="button" class="btn btn-sm btn-success">
+                        <i class="fas fa-print mr-2"></i>
+                            Print Documents
+                        </button>
+                        <!-- button -->
                     </li>
                     <!-- /.nav-item -->
                   </ul>
                   <!-- /.nav -->
                 </div>
                 <!-- /.col -->
-                <div class="col">
-                  <div class="input-group input-group-sm float-right" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
+                <form action="{{ route('customer.search', 'username') }}" id="search">
+                    <div class="col">
+                      <div class="input-group input-group-sm float-right" style="width: 180px;">
+                        <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Username">
+
+                        <div class="input-group-append">
+                          <button type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- /.input-group -->
                     </div>
-                  </div>
-                  <!-- /.input-group -->
-                </div>
+                </form>
                 <!-- /.col -->
-                <div class="col">
-                  <select class="form-control form-control-sm select2">
-                    <option selected="selected">Name</option>
-                    <option>Recently Added</option>
-                    <option>Premium</option>
-                    <option>Free</option>
+
+                <div class="col col-3">
+                  <select id="searchBy" class="form-control form-control-sm select2">
+                    <option value="{{ route('customer.search', 'username') }}" selected="selected">Username</option>
+                    <option value="{{ route('customer.search', 'email') }}">Email</option>
                   </select>
                 </div>
                 <!-- /.col -->
@@ -77,7 +77,6 @@
                 <thead>
                   <tr>
                     <th style="width: 10px">#</th>
-                    <th>Profile</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Label</th>
@@ -85,62 +84,37 @@
                   </tr>
                 </thead>
                 <tbody>
+                @if ($users->isEmpty())
+                <tr>
+                    <td colspan="6" class="text-center">Data not available</td>
+                </tr>
+                @else
+                @foreach ($users as $key => $def)
                   <tr>
-                    <td>1.</td>
+                    <td>{{ $users->firstItem() + $key }}</td>
+                    <td>{{ $def->username }}</td>
+                    <td>{{ $def->email }}</td>
                     <td>
-                        <img src="dist/img/user1-128x128.jpg" alt="" class="img-circle img-sm elevation-2">
+                        <span class="badge {{ $def->label == 'Free' ? 'bg-primary' : 'bg-warning' }}">
+                            {{ $def->label }} Customer
+                        </span>
                     </td>
-                    <td>Ujang</td>
-                    <td>ujang1@gmail.com</td>
-                    <td><span class="badge bg-warning">Premium</span></td>
                     <td class="text-center">
                       <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#view-member">View</button>
-                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#remove-member">Block</button>
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#view-member"><i class="far fa-eye"></i></button>
+                          <button type="button" class="btn btn-sm btn-danger" data-id="{{ route('customer.destroy', Crypt::encrypt($def->id)) }}" data-name="{{ $def->username }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>2.</td>
-                    <td>
-                        <img src="dist/img/user1-128x128.jpg" alt="" class="img-circle img-sm elevation-2">
-                    </td>
-                    <td>Oni</td>
-                    <td>oni1@gmail.com</td>
-                    <td><span class="badge bg-primary">Free</span></td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#view-member">View</button>
-                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#remove-member">Block</button>
-                        </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3.</td>
-                    <td>
-                        <img src="dist/img/user1-128x128.jpg" alt="" class="img-circle img-sm elevation-2">
-                    </td>
-                    <td>Ridlo</td>
-                    <td>ridlo1@gmail.com</td>
-                    <td><span class="badge bg-warning">Premium</span></td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#view-member">View</button>
-                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#remove-member">Block</button>
-                        </div>
-                    </td>
-                  </tr>
+                @endforeach
+                @endif
                 </tbody>
               </table>
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
-                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                  {{ $users->links() }}
               </ul>
             </div>
           </div>
@@ -211,165 +185,22 @@
           </div>
           <!-- /.modal -->
 
-          <!-- Modal For Create -->
-          <div class="modal fade" id="create-member">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Create New Member</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- Modal Body Start Here -->
-                  <form>
-                      <!-- input states -->
-                    <div class="form-group">
-                        <label class="col-form-label" for="emailInput">Email</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="Enter ...">
-                      </div>
-                      <!-- /.form-group -->
-
-                      <div class="form-group">
-                          <label class="col-form-label" for="nameInput">Member Name</label>
-                          <input type="text" class="form-control" id="nameInput" placeholder="Enter ...">
-                      </div>
-                      <!-- /.form-group -->
-
-                      <div class="form-group">
-                          <label class="col-form-label" for="genderSelect">Gender</label>
-
-                          <div class="custom-control custom-radio">
-                              <input class="custom-control-input" type="radio" id="genderMale" name="gender">
-                              <label for="genderMale" class="custom-control-label">Male</label>
-                              </div>
-                              <div class="custom-control custom-radio">
-                              <input class="custom-control-input" type="radio" id="genderFemale" name="gender">
-                              <label for="genderFemale" class="custom-control-label">Female</label>
-                              </div>
-                              <div class="custom-control custom-radio">
-                              <input class="custom-control-input" type="radio" id="genderNone" name="gender" checked>
-                              <label for="genderNone" class="custom-control-label">Choose Later</label>
-                          </div>
-                      </div>
-                      <!-- /.form-group -->
-
-                      <div class="form-group">
-                          <label>Choose Role</label>
-                          <select class="form-control">
-                              <option>Member</option>
-                              <option>Admin</option>
-                          </select>
-                      </div>
-                  <!-- /.Modal Body -->
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                    <div class="row">
-                      <div class="col">
-                        <button type="reset" class="btn btn-default">Reset</button>
-                      </div>
-                      <div class="col">
-                        <button type="submit" class="btn btn-primary">Create</button>
-                      </div>
-                    </div>
-                    <!-- /.row -->
-                </div>
-                </form>
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
-          <!-- /.modal -->
-
-          <!-- Modal For Edit -->
-          <div class="modal fade" id="change-member">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Change Member Details</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- Modal Body Start Here -->
-                  <form>
-                    <!-- input states -->
-                  <div class="form-group">
-                      <label class="col-form-label" for="emailInput">Email</label>
-                      <input type="email" class="form-control" id="emailInput" placeholder="Enter ...">
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-form-label" for="nameInput">Member Name</label>
-                        <input type="text" class="form-control" id="nameInput" placeholder="Enter ...">
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-form-label" for="genderSelect">Gender</label>
-
-                        <div class="custom-control custom-radio">
-                            <input class="custom-control-input" type="radio" id="genderMale" name="gender">
-                            <label for="genderMale" class="custom-control-label">Male</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                            <input class="custom-control-input" type="radio" id="genderFemale" name="gender">
-                            <label for="genderFemale" class="custom-control-label">Female</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                            <input class="custom-control-input" type="radio" id="genderNone" name="gender" checked>
-                            <label for="genderNone" class="custom-control-label">Choose Later</label>
-                        </div>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label>Choose Role</label>
-                        <select class="form-control">
-                            <option>Member</option>
-                            <option>Admin</option>
-                        </select>
-                    </div>
-                <!-- /.Modal Body -->
-              </div>
-
-              <div class="modal-footer justify-content-between">
-                  <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-              </form>
-              <!-- /.form -->
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
-          <!-- /.modal -->
-
           <!-- Modal For Delete -->
-          <div class="modal fade" id="remove-member">
+          <div class="modal fade" id="remove">
             <div class="modal-dialog">
               <div class="modal-content bg-danger">
                 <div class="modal-header">
-                  <h4 class="modal-title">Block "Member 1001"</h4>
+                  <h4 class="modal-title">Remove selected item</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure want to block "Member 1001" ?</p>
+                  <p>Are you sure want to remove ?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                  <!-- select between this buttton -->
-                  <button type="button" class="btn btn-outline-light">Unblock</button>
-                  <button type="button" class="btn btn-outline-light">Block</button>
+                  <button type="button" id="remove-btn" class="btn btn-outline-light">Remove</button>
                 </div>
               </div>
               <!-- /.modal-content -->

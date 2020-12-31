@@ -17,6 +17,9 @@
 
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
                         <a class="content-link" href="{{ route('movie.details', Crypt::encrypt($ticket->ticket_id)) }}">{{ $ticket->film->item_name }}</a>
+
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <a class="content-link" href="#">Checkout</a>
                     </div>
                 </div>
             </div>
@@ -63,7 +66,7 @@
                                     </div>
                                     <ul class="entity-list">
                                         <li>
-                                            <span class="entity-list-title">Broadcast date:</span>{{ \Carbon\Carbon::parse($ticket->broadcast_date)->format('M d, Y') }}, {{ $ticket->broadcast_time }}
+                                            <span class="entity-list-title">Broadcast date:</span>{{ \Carbon\Carbon::parse($ticket->broadcast_date)->format('M d, Y') }}
                                         </li>
                                         <li>
                                             <span class="entity-list-title">Available at:</span>
@@ -78,36 +81,96 @@
                                                 <span class="entity-list-title">Price</span>
                                             </div>
                                             <div class="col-4">
-
-                                                <span class="entity-list-title">Rp. <span id="item-price">{{ $ticket->price }}</span></span>
+                                                <span class="entity-list-title">Rp. {{ $total }}</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <span class="entity-list-title">Qty: {{ $qty }}</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <form action="{{ route('movie.carts', Crypt::encrypt($ticket->ticket_id)) }}" method="GET">
-                                        @csrf
-                                        <div class="entity-info">
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-2"><span class="">Quantity</span></div>
-                                                <div class="col-4">
-                                                    <div class="btn-group">
-                                                        <input type="number" name="qty" class="form-control" id="item-qty" placeholder="Quantity" size="20" value="1" min="1" max="99" readonly />
+                                    <!-- Checkout process -->
+                                    <form action="{{ route('movie.checkout', Crypt::encrypt($ticket->ticket_id)) }}" method="POST">
+                                    @csrf
 
-                                                        <button type="button" class="btn btn-danger inline-block" onclick="decreaseValue()" value="Decrease Value">-</button>
-                                                        <button type="button" class="btn btn-primary" id="increase" onclick="increaseValue()" value="Increase Value">+</button>
+                                    <input type="hidden" name="qty" value="{{ $qty }}">
+                                    <input type="hidden" name="total" value="{{ $total }}">
+
+                                    <div class="entity-info">
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-2"><span class="">Choose Seat</span></div>
+                                            <div class="col-4">
+                                                <table class="table table-bordered">
+                                                    @php $seatKey = $ticket->cinema->seats; @endphp
+                                                    @foreach($seatKey AS $key => $item)
+                                                        @if ($key % 4 == 0)
+                                                            <tr>
+                                                        @endif
+
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="check-seats" name="seat-selection[]" value="{{ $item['seat_id'] }}" />
+                                                            {{ $item['seat_name'] }}
+                                                        </td>
+
+                                                        @if (($key + 1) % 4 == 0)
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                </table>
+
+                                                @error('seat-selection')
+                                                    <span class="@error('seat-selection') text-danger @enderror">{{ $message }}</span>
+                                                @enderror
+
+                                                @if (session('seatqty'))
+                                                    <div class="alert alert-danger">
+                                                        {{ session('seatqty') }}
                                                     </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!-- ./row -->
+                                    </div>
+
+                                    <div class="entity-info">
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <span class="entity-list-title">Promote Code</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}" placeholder="Enter Promote Code..">
+
+                                                    @error('code')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <!-- ./row -->
-                                        </div>
 
-                                        <div class="entity-info">
-                                            <hr>
-                                            <button onclick="location.href = '{{ route('home') }}';" type="button" class="btn btn-outline-default mr-2"><i class="fas fa-arrow-circle-left mr-2"></i>Back to Movies</button>
-                                            <button type="submit" class="btn btn-outline-warning">Order Ticket Now</button>
+                                            @if (session('codeinvalid'))
+                                                <div class="alert alert-danger">
+                                                    {{ session('codeinvalid') }}
+                                                </div>
+                                            @elseif (session('reachminimum'))
+                                                <div class="alert alert-danger">
+                                                    {{ session('reachminimum') }}
+                                                </div>
+                                            @endif
                                         </div>
+                                    </div>
+
+                                    <div class="entity-info">
+                                        <hr>
+                                        <button onclick="location.href = '{{ route('movie.details', Crypt::encrypt($ticket->ticket_id)) }}'; return false;" type="button" class="btn btn-outline-default pl-4 pr-4 mr-2"><i class="fas fa-arrow-circle-left mr-2"></i>Back to Movie</button>
+                                        <button type="submit" class="btn btn-outline-warning pl-4 pr-4">Checkout<i class="fas fa-shopping-cart ml-2"></i></button>
+                                    </div>
+
                                     </form>
+                                    <!-- Checkout process -->
 
                                 </div>
                             </div>
@@ -144,10 +207,26 @@
                                 </div>
                             </div>
                         </div>
+
                 </div>
 
 
             </div>
         </div>
 
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+        var limit = {{ $qty }};
+
+        $('.check-seats').on('change', function(evt) {
+            if($('.check-seats:checked').length > limit) {
+                this.checked = false;
+                alert('You can only choose ' + limit + ' seats');
+            }
+        });
+    });
+</script>
 @endsection

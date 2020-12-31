@@ -1,6 +1,6 @@
 @extends('portal.master.home')
 
-@section('title', 'Manage User')
+@section('title', 'Manage Premium Customers')
 
 @section('content')
 
@@ -10,14 +10,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Users</h1>
-                <span>{{ isset($result) ? __('Result of '.$result.', '.$total.' record found') : '' }}</span>
+                <h1>Customers</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/portal">Home</a></li>
-                <li class="breadcrumb-item">Items</li>
-                <li class="breadcrumb-item active"><a href="/usermanage">Manage</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('portal.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('customers') }}">Customers</a></li>
+                <li class="breadcrumb-item active">Premium Customers</li>
                 </ol>
             </div>
             </div>
@@ -30,7 +29,7 @@
 
         <div class="card">
             <div class="card-header">
-              <h3 class="card-title">All User Lists</h3>
+              <h3 class="card-title">All Customer Lists</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -38,135 +37,155 @@
                 <div class="col">
                   <ul class="nav">
                     <li class="nav-item mr-2">
-                    </li>
-                    <!-- /.nav-item -->
-                    <li class="nav-item">
+                        <form action="#" target="_blank">
+                            <button type="submit" class="btn btn-sm btn-success">
+                            <i class="fas fa-print mr-2"></i>
+                                Print Documents
+                            </button>
+                            <!-- button -->
+                        </form>
                     </li>
                     <!-- /.nav-item -->
                   </ul>
                   <!-- /.nav -->
                 </div>
                 <!-- /.col -->
-                <form action="{{ route('customer.search', 'username') }}" id="search">
-                <div class="col">
 
-                        <div class="input-group input-group-sm float-right" style="width: 180px;">
+                <form action="{{ route('customer.free.search', 'username') }}" id="search">
+                    <div class="col">
+                      <div class="input-group input-group-sm float-right" style="width: 180px;">
+                        <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Username">
 
-                            <input type="text" name="keyword" id="search-input" class="form-control float-right" value="{{ $result ?? '' }}" placeholder="Search by Name">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-
+                        <div class="input-group-append">
+                          <button type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                          </button>
                         </div>
-
-                    <!-- /.input-group -->
-                </div>
+                      </div>
+                      <!-- /.input-group -->
+                    </div>
                 </form>
                 <!-- /.col -->
 
                 <div class="col col-3">
                   <select id="searchBy" class="form-control form-control-sm select2">
-                    <option value="{{ route('customer.search', 'username') }}" selected="selected">Name</option>
-                    <option value="{{ route('customer.search', 'email') }}">Email</option>
+                    <option value="{{ route('customer.free.search', 'username') }}" selected="selected">Username</option>
+                    <option value="{{ route('customer.free.search', 'email') }}">Email</option>
                   </select>
                 </div>
                 <!-- /.col -->
               </div>
-          <br><br>
-          <table class="table">
-            <thead class="thead-dark">
+
+              <table class="table table-bordered mt-2">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Label</th>
+                    <th class="text-center" style="width: 40px">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @if ($users->isEmpty())
                 <tr>
-                    <th width="50px" scope="col">ID</th>
-                    <th width="200px" scope="col">Username</th>
-                    <th width="200px" scope="col">Email</th>
-                    <th width="200px" scope="col">Roles</th>
-                    <th width="200px" scope="col">Action</th>
+                    <td colspan="6" class="text-center">Data not available</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($users as $def)
-                <tr>
-                    <th scope="row"> {{$def->id}}</th>
-                    <td>{{ $def-> username}}</td>
-                    <td>{{$def->email}}</td>
-                    <td>{{$def -> roles}}</td>
+                @else
+                @foreach ($users as $key => $def)
+                  <tr>
+                    <td>{{ $users->firstItem() + $key }}</td>
+                    <td>{{ $def->username }}</td>
+                    <td>{{ $def->email }}</td>
                     <td>
-                    <div class="btn-group">
-                          <button onclick="window.location.href = '/customer/id/{{ Crypt::encrypt($def->id) }}/edit';" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                          <button type="button" class="btn btn-sm btn-danger" data-id="/customer/id/{{ Crypt::encrypt($def->id) }}/destroy" data-name="{{ $def->username }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
-                          <!-- data-toggle="modal" data-target="#remove-cinemas" -->
-                          <!--  data-toggle="modal" data-target="#change-cinemas" -->
+                        <span class="badge {{ $def->label == 'Free' ? 'bg-primary' : 'bg-warning' }}">
+                            {{ $def->label }} Customer
+                        </span>
+                    </td>
+                    <td class="text-center">
+                      <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#view-member"><i class="far fa-eye"></i></button>
+                          <button type="button" class="btn btn-sm btn-danger" data-id="{{ route('customer.destroy', Crypt::encrypt($def->id)) }}" data-name="{{ $def->username }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
                       </div>
                     </td>
-                </tr>
+                  </tr>
                 @endforeach
-            </tbody>
-        </table>
+                @endif
+                </tbody>
+              </table>
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
-              <ul class="pagination pagination-sm m-0 float-right">
-              {{ $users->links() }}
-              </ul>
+                <ul class="pagination pagination-sm m-0 float-right">
+                    {{ $users->links() }}
+                </ul>
             </div>
           </div>
           <!-- /.card -->
 
-          <!-- Modal For View Item -->
-          <div class="modal fade" id="view">
+          <!-- Modal For View Member -->
+          <div class="modal fade" id="view-member">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title" id="name">Cinema 1</h4>
+                  <h4 class="modal-title">Member 1001</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <!-- Modal Body Start Here -->
-                  <div class="row">
-                    <!-- Item image -->
-                    <div class="col">
-                      <div class="position-relative" style="width: 350px; height: 250px;">
-                        <img src="{{ asset('dist/img/photo1.png') }}" alt="Photo 1" id="image" class="img-thumbnail img-fluid" style="width: 350px; height: 250px;">
+                  <form>
+                      <!-- input states -->
+                    <div class="form-group">
+                        <label class="col-form-label" for="emailInput">Email</label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="Enter ...">
                       </div>
-                    </div>
-                    <!-- /.col -->
+                      <!-- /.form-group -->
 
-                    <div class="col">
-                      <table class="table table-borderless">
-                        <tr>
-                          <th>Cinema</th>
-                          <td id="name">Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        </tr>
-                        <tr>
-                          <th>Details</th>
-                          <td id="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tempora quo, consequuntur velit aliquam molestias!</td>
-                        </tr>
-                        <tr>
-                          <th>Location</th>
-                          <td id="location">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tempora quo, consequuntur velit aliquam molestias!</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <!-- /.col -->
-                  </div>
+                      <div class="form-group">
+                          <label class="col-form-label" for="nameInput">Member Name</label>
+                          <input type="text" class="form-control" id="nameInput" placeholder="Enter ...">
+                      </div>
+                      <!-- /.form-group -->
+
+                      <div class="form-group">
+                          <label class="col-form-label" for="genderSelect">Gender</label>
+
+                          <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="genderMale" name="gender">
+                              <label for="genderMale" class="custom-control-label">Male</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="genderFemale" name="gender">
+                              <label for="genderFemale" class="custom-control-label">Female</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="genderNone" name="gender" checked>
+                              <label for="genderNone" class="custom-control-label">Choose Later</label>
+                          </div>
+                      </div>
+                      <!-- /.form-group -->
+
+                      <div class="form-group">
+                          <label>Choose Role</label>
+                          <select class="form-control">
+                              <option>Member</option>
+                              <option>Admin</option>
+                          </select>
+                      </div>
                   <!-- /.Modal Body -->
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" data-dismiss="modal">Done</button>
                 </div>
+                </form>
               </div>
               <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
           </div>
-          <!-- /.modal -->
-
           <!-- /.modal -->
 
           <!-- Modal For Delete -->
@@ -197,18 +216,5 @@
     </section>
     <!-- /.content -->
   </div>
- 
 
-@endsection
-
-{{-- if an error occurs in the save process, display the modal again --}}
-
-@section('script')
-
-@if($errors->any())
-  <script>
-      $("#create-cinemas").modal('show')
-  </script>
-@endif
-
-@endsection
+@endsection()

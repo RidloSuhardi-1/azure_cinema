@@ -5,18 +5,18 @@
 @section('content')
 
 <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="{{ asset('dist/img/parts/bg-banner-3.jpg') }}" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
                     <h1 class="section-title">Transaction History</h1>
                     <div class="page-breadcrumbs">
-                        <a class="content-link" href="index.html">Home</a>
+                        <a class="content-link" href="{{ route('home') }}">Home</a>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
-                        <a class="content-link" href="movies-blocks.html">Transaction</a>
+                        <a class="content-link" href="{{ route('movie.transactions') }}">Transaction</a>
 
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
-                        <a class="content-link" href="movies-blocks.html">Transaction History</a>
+                        <a class="content-link" href="{{ route('movie.transactions') }}">Transaction History</a>
                     </div>
                 </div>
             </div>
@@ -29,20 +29,28 @@
                 </div>
 
                 <table class="table table-bordered">
-                    <tr>
-                        <th scope="col">Transaction ID</th>
-                        <th scope="col">Film</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">Date</th>
-                    </tr>
-                    <tr>
-                        <td>TX1001</td>
-                        <td>Star Wars</td>
-                        <td>2</td>
-                        <td>15000</td>
-                        <td>2020/02/27 01:50:60 PM</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Film</th>
+                            <th scope="col">Broadcast date</th>
+                            <th scope="col">Transaction Date</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($transact as $key => $item)
+                        <tr>
+                            <td>#</td>
+                            <td>{{ $item->ticket->film->item_name }}</td>
+                            <td>{{ $item->ticket->broadcast_date }}</td>
+                            <td>{{ $item->created_at }}</td>
+                            <td class="text-center">
+                                <button onclick="location.href = '{{ route('movie.ticket.print', $item->transaction_id) }}';" class="btn btn-outline-warning">Download Ticket</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </section>

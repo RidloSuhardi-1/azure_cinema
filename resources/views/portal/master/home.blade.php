@@ -63,7 +63,7 @@
             <a href="/user_settings" class="dropdown-item">
                 <i class="fas fa-user-cog mr-2"></i> Account Settings
             </a>
-            
+
             <div class="dropdown-divider"></div>
                 <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                     class="dropdown-item bg-danger">
@@ -73,7 +73,7 @@
                   @csrf
                 </form>
             </div>
-            
+
         </li>
     </ul>
   </nav>
@@ -82,7 +82,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/home" class="brand-link">
+    <a href="{{ route('portal.dashboard') }}" class="brand-link">
       <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light ml-1">Azure Cinema <strong>Portal</strong></span>
     </a>
@@ -108,17 +108,17 @@
                with font-awesome or any other icon font library -->
 
           <li class="nav-item">
-            <a href="/home" class="nav-link {{ Route::is('home') ? 'active' : '' }}">
+            <a href="/portal" class="nav-link {{ Route::is('portal.dashboard') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('members') ? 'menu-open' : '' }} {{ Route::is('waiting.members') ? 'menu-open' : '' }} {{ Route::is('recently.members') ? 'menu-open' : '' }}">
+          <li class="nav-item {{ Route::is('members') ? 'menu-open' : '' }} {{ Route::is('recently_members') ? 'menu-open' : '' }}">
             <!-- Nav Member -->
             <a href="#"
-              class="nav-link {{ Route::is('members') ? 'active' : '' }} {{ Route::is('waiting.members') ? 'active' : '' }} {{ Route::is('recently.members') ? 'active' : '' }}">
+              class="nav-link {{ Route::is('members') ? 'active' : '' }} {{ Route::is('recently_members') ? 'active' : '' }}">
               <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Manage Members
@@ -128,7 +128,13 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{Route('members')}}" class="nav-link {{ Route::is('members') ? 'active' : '' }}">
+                <a href="#" class="nav-link {{ Route::is('recently_members') ? 'active' : '' }}">
+                  <i class="fas fa-user-check nav-icon"></i>
+                  <p>Recently Added</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('members') }}" class="nav-link {{ Route::is('members') ? 'active' : '' }}">
                   <i class="fas fa-users nav-icon"></i>
                   <p>All Members</p>
                   <span class="badge badge-info right">6</span>
@@ -138,9 +144,9 @@
           </li>
           <!-- /.nav-item -->
 
-          <li class="nav-item {{ Route::is('customers') ? 'menu-open' : '' }} {{ Route::is('customers.free') ? 'menu-open' : '' }} {{ Route::is('customers.premium') ? 'menu-open' : '' }}">
+          <li class="nav-item {{ Route::is('customers') ? 'menu-open' : '' }} {{ Route::is('customers.free') ? 'menu-open' : '' }} {{ Route::is('customers.premium') ? 'menu-open' : '' }} {{ Route::is('customer.premium.search') ? 'menu-open' : '' }} {{ Route::is('customer.free.search') ? 'menu-open' : '' }}">
             <!-- Nav Member -->
-            <a href="#" class="nav-link {{ Route::is('customers') ? 'active' : '' }} {{ Route::is('customers.free') ? 'active' : '' }} {{ Route::is('customers.premium') ? 'active' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('customers') ? 'active' : '' }} {{ Route::is('customers.free') ? 'active' : '' }} {{ Route::is('customers.premium') ? 'active' : '' }} {{ Route::is('customer.premium.search') ? 'active' : '' }} {{ Route::is('customer.free.search') ? 'active' : '' }}">
               <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Manage Customers
@@ -150,21 +156,21 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ Route('customers.free') }}" class="nav-link {{ Route::is('customers.free') ? 'active' : '' }}">
+                <a href="{{ route('customers.free') }}" class="nav-link {{ Route::is('customers.free') ? 'active' : '' }} {{ Route::is('customer.free.search') ? 'active' : '' }}">
                   <i class="fas fa-star nav-icon"></i>
                   <p>Free Customers</p>
                   <span class="badge badge-primary right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ Route('customers.premium') }}" class="nav-link {{ Route::is('customers.premium') ? 'active' : '' }}">
+                <a href="{{ route('customers.premium') }}" class="nav-link {{ Route::is('customers.premium') ? 'active' : '' }} {{ Route::is('customer.premium.search') ? 'active' : '' }}">
                   <i class="fas fa-medal nav-icon"></i>
                   <p>Premium Customers</p>
                   <span class="badge badge-primary right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ Route('customers') }}" class="nav-link {{ Route::is('customers') ? 'active' : '' }}">
+                <a href="{{ route('customers') }}" class="nav-link {{ Route::is('customers') ? 'active' : '' }}">
                   <i class="fas fa-users nav-icon"></i>
                   <p>All Customers</p>
                   <span class="badge badge-primary right">6</span>
@@ -185,14 +191,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/cinemas" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }} {{ Route::is('cinema.search') ? 'active' : '' }} {{ Route::is('seats') ? 'active' : '' }}">
+                <a href="{{ route('cinemas') }}" class="nav-link {{ Route::is('cinemas') ? 'active' : '' }} {{ Route::is('cinema.search') ? 'active' : '' }} {{ Route::is('seats') ? 'active' : '' }}">
                     <i class="fas fa-landmark nav-icon"></i>
                   <p>Manage Cinemas</p>
                   <span class="badge badge-danger right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/films" class="nav-link {{ Route::is('films') ? 'active' : '' }} {{ Route::is('film.search') ? 'active' : '' }}">
+                <a href="{{ route('films') }}" class="nav-link {{ Route::is('films') ? 'active' : '' }} {{ Route::is('film.search') ? 'active' : '' }}">
                   <i class="fas fa-film nav-icon"></i>
                   <p>Manage Films</p>
                   <span class="badge badge-danger right">6</span>
@@ -213,14 +219,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/tickets" class="nav-link {{ Route::is('tickets') ? 'active' : '' }}">
+                <a href="{{ route('tickets') }}" class="nav-link {{ Route::is('tickets') ? 'active' : '' }}">
                   <i class="fas fa-ticket-alt nav-icon"></i>
                   <p>Ticket</p>
                   <span class="badge badge-danger right">6</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/codes" class="nav-link {{ Route::is('codes') ? 'active' : '' }} {{ Route::is('code.search') ? 'active' : '' }}">
+                <a href="{{ route('codes') }}" class="nav-link {{ Route::is('codes') ? 'active' : '' }} {{ Route::is('code.search') ? 'active' : '' }}">
                   <i class="fas fa-receipt nav-icon"></i>
                   <p>Promote Code</p>
                   <span class="badge badge-danger right">6</span>
@@ -231,7 +237,7 @@
           <!-- /.nav-item -->
 
           <li class="nav-item">
-            <a href="/transactions" class="nav-link {{ Route::is('transactions') ? 'active' : '' }} {{ Route::is('searchTransaction') ? 'active' : '' }}">
+            <a href="{{ route('transactions') }}" class="nav-link {{ Route::is('transactions') ? 'active' : '' }} {{ Route::is('searchTransaction') ? 'active' : '' }}">
               <i class="nav-icon fas fa-barcode"></i>
               <p>Manage Transaction</p>
             </a>

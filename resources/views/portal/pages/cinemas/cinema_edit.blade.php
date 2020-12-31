@@ -14,9 +14,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/portal">Home</a></li>
-                <li class="breadcrumb-item active"><a href="/cinemas">Cinema</a></li>
-                <li class="breadcrumb-item active"><a href="/cinema/id/{{ Crypt::encrypt($cinemas->cinema_id) }}/edit">{{ $cinemas->cinema_name }} Update</a></li>
+                <li class="breadcrumb-item"><a href="/portal/home">Home</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('cinemas') }}">Cinema</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('cinema.edit', Crypt::encrypt($cinemas->cinema_id)) }}">{{ $cinemas->cinema_name }} Update</a></li>
                 </ol>
             </div>
             </div>
@@ -28,7 +28,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col">
-            <form action="/cinema/id/{{ Crypt::encrypt($cinemas->cinema_id) }}/update" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('cinema.update', Crypt::encrypt($cinemas->cinema_id)) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Form Insert -->
                 <div class="card clearfix">
@@ -99,7 +99,7 @@
 
                         <hr>
 
-                        <button onclick="window.location.href = '/cinemas'; return false;" class="btn btn-default" data-dismiss="modal"><i class="fas fa-arrow-circle-left mr-2"></i>Back to previous</button>
+                        <button onclick="window.location.href = '{{ route('cinemas') }}'; return false;" class="btn btn-default" data-dismiss="modal"><i class="fas fa-arrow-circle-left mr-2"></i>Back to previous</button>
 
                         <div class="row float-right">
                             <div class="col">

@@ -8,7 +8,7 @@
 <div class="register-box">
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1">Azure Cinema<br><b>PORTAL</b></a>
+      <a href="{{ route('portal') }}" class="h1">Azure Cinema<br><b>PORTAL</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Register a new membership</p>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Retype Password">     
+        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Retype Password">
            <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -96,8 +96,8 @@
 
       <hr>
 
-        <a href="/">Back to landing</a>
-        <a href="/login" class="float-right">Already have an account</a>
+        <a href="{{ route('portal') }}">Back to landing</a>
+        <a href="{{ route('login') }}" class="float-right">Already have an account</a>
 
     </div>
     <!-- /.form-box -->

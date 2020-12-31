@@ -10,13 +10,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>{{ __('Change seat  ') }}</h1>
+                <h1>{{ __('Change seat') }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Seats</li>
-                <li class="breadcrumb-item active">Update</li>
+                    <li class="breadcrumb-item"><a href="/portal/home">Home</a></li>
+                    <li class="breadcrumb-item active">Seats</li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
             </div>
             </div>
@@ -28,7 +28,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col">
-            <form action="/cinema/seat/id/{{ Crypt::encrypt($seats->seat_id) }}/update" method="POST">
+            <form action="{{ route('seat.update', Crypt::encrypt($seats->seat_id)) }}" method="POST">
             @csrf
                 <!-- Form Insert -->
                 <div class="card clearfix">
@@ -56,7 +56,7 @@
 
                         <hr>
 
-                        <button onclick="window.location.href = '/cinema/id/{{ Crypt::encrypt($seats->cinema_id) }}/seats'; return false;" type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-arrow-circle-left mr-2"></i>Back to previous</button>
+                        <button onclick="window.location.href = '{{ route('seats', Crypt::encrypt($seats->cinema_id)) }}'; return false;" type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-arrow-circle-left mr-2"></i>Back to previous</button>
 
                         <div class="row float-right">
                             <div class="col">

@@ -14,9 +14,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/portal/home">Home</a></li>
                 <li class="breadcrumb-item">Items</li>
-                <li class="breadcrumb-item"><a href="/cinemas">Cinemas</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('cinemas') }}">Cinemas</a></li>
                 <li class="breadcrumb-item active">{{ $cinemas->cinema_name }}</li>
                 <li class="breadcrumb-item active">Seats</li>
                 </ol>
@@ -80,10 +80,8 @@
                     <td>{{ $value->seat_name }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                          <button onclick="window.location.href = '/cinema/seat/id/{{ Crypt::encrypt($value->seat_id) }}/edit'; " type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                          <button type="button" class="btn btn-sm btn-danger" data-id="/cinema/seat/id/{{ Crypt::encrypt($value->seat_id) }}/destroy" data-name="{{ $value->seat_name }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
-                          <!--  data-toggle="modal" data-target="#change-seat" -->
-                          <!-- data-toggle="modal" data-target="#remove-seat" -->
+                          <button onclick="window.location.href = '{{ route('seat.edit', Crypt::encrypt($value->seat_id)) }}'; " type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                          <button type="button" class="btn btn-sm btn-danger" data-id="{{ route('seat.destroy', Crypt::encrypt($value->seat_id)) }}" data-name="{{ $value->seat_name }}" data-toggle="modal" data-target="#remove"><i class="far fa-trash-alt"></i></button>
                       </div>
                     </td>
                   </tr>
@@ -94,7 +92,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
-              <a href="/cinemas" class="btn btn-sm btn-primary">
+              <a href="{{ route('cinemas') }}" class="btn btn-sm btn-primary">
                 <i class="fas fa-arrow-circle-left mr-1"></i>
                 Back to Cinemas
               </a>
@@ -118,7 +116,7 @@
                 </div>
                 <div class="modal-body">
                   <!-- Modal Body Start Here -->
-                  <form action="/cinema/id/{{ Crypt::encrypt($cinemas->cinema_id) }}/seat/store" method="POST">
+                  <form action="{{ route('seat.store', Crypt::encrypt($cinemas->cinema_id)) }}" method="POST">
                   @csrf
                     <input type="hidden" name="cinema_id" class="form-control" id="cinemaIDInput" value="{{ Crypt::encrypt($cinemas->cinema_id) }}">
 

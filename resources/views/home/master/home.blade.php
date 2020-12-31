@@ -5,6 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Azure Cinema | @yield('title')</title>
+        <!-- Icon -->
+        <link rel="icon" type="image/png" href="{{ asset('dist/img/icon/azureicon-32x32.png') }}" sizes="32x32" />
+
         <!-- Bootstrap -->
         <link href="{{ asset('plugins/azure_theme/bootstrap/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
         <!-- Animate.css -->
@@ -26,11 +29,10 @@
         <header class="header header-horizontal header-view-pannel">
             <div class="container">
                 <nav class="navbar">
-                    <a class="navbar-brand" href="/dash">
+                    <a class="navbar-brand" href="{{ route('home') }}">
                         <span class="logo-element">
                             <span class="logo-tape">
                                 <img src="{{ asset('dist/img/svg/logo-part.png') }}" alt="svg-content svg-fill-theme">
-                                <!-- <span class="svg-content svg-fill-theme" data-svg="{{ asset('dist/img/svg/logo-part.svg') }}"></span> -->
                             </span>
                             <span class="logo-text text-uppercase">
                                 Azure Cinema</span>
@@ -46,14 +48,14 @@
                     <div class="navbar-collapse">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/dash">Home</a>
+                                <a class="nav-link" href="{{ route('home') }}">Home</a>
                             </li>
                             <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
                                 <a class="nav-link" href="#">Products</a>
                                 <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
                                 <ul class="collapse nav">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/movie_lists">Movies</a>
+                                        <a class="nav-link" href="{{ route('movie.lists') }}">Movies</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/gallery">Trailer Gallery</a>
@@ -61,7 +63,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/transaction_history">Transaction</a>
+                                <a class="nav-link" href="{{ route('movie.transactions') }}">Transaction</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">About us</a>
@@ -69,13 +71,16 @@
                         </ul>
                         <div class="navbar-extra">
                             <div class="btn-group">
-                                <a class="btn-theme btn mr-1" href="/login_consumer"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Login</a>
-                                <a class="btn-theme btn" href="/register_consumer"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a>
-                                &nbsp;&nbsp;
-                                <form action="/logout" method="POST">
+                                @if (Session::has('username'))
+                                <a href="#" class="btn-theme btn inline-block mr-2">Welcome {{ Session('username') }}</a>
+                                <form action="{{ route('consumer.logout') }}" method="post">
                                 @csrf
-                                <button class="btn-theme btn" type="submit"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Logout</button>
+                                <button class="btn-theme btn inline-block" type="submit"><i class="fas fa-user-plus mr-2"></i>Logout</button>
                                 </form>
+                                @else
+                                <a class="btn-theme btn mr-1" href="{{ route('consumer.login') }}"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+                                <a class="btn-theme btn" href="{{ route('consumer.register') }}"><i class="fas fa-user-plus mr-2"></i>Register</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -145,7 +150,7 @@
                                 <hr>
                             </li>
                             <li>
-                                <a class="content-link text-warning" href="#">
+                                <a class="content-link text-warning" href="{{ route('portal') }}" target="_blank">
                                     Azure Cinema Portal
                                 </a>
                             </li>
@@ -238,8 +243,10 @@
 
             var p = parseInt(document.getElementById('item-price').innerHTML);
             var totalPrice = p;
-            console.log(totalPrice);
             // document.getElementById('item-price').innerHTML = totalPrice;
         </script>
+
+        @section('script')
+        @show
     </body>
 </html>
