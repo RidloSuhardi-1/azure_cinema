@@ -1,25 +1,16 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index');
 
 //-----------------------Customer login----------------------------//
 Auth::routes();
-Route::get('/login_consumer', 'UserController@indexLogin');
-Route::post('/hhhh', 'UserController@login');
-Route::get('/register_consumer', 'UserController@indexRegister');
-Route::post('/proses', 'UserController@register');
-Route::post('/logout_consumer', 'UserController@logout');
+
+Route::get('/consumer/login', 'UserController@indexLogin')->name('consumer.login');
+Route::post('/consumer/login/process', 'UserController@login')->name('consumer.login.process');
+Route::get('/consumer/register', 'UserController@indexRegister')->name('consumer.register');
+Route::post('/consumer/register/process', 'UserController@register')->name('consumer.register.process');
+Route::post('/consumer/logout', 'UserController@logout')->name('consumer.logout');
 
 //--------------------------Customers All logic------------------------//
 Route::post('/customer/store', 'ManageUserController@store');
@@ -29,104 +20,137 @@ Route::get('/customer/id/{id}/destroy', 'ManageUserController@destroy');
 Route::get('/customer/search/{key}', 'ManageUserController@search')->name('customer.search');
 
 //--------------------------Customers Premium Logic-------------------//
-Route::post('/premium_customer/store', 'ManageUserController@store');
-Route::get('/premium_customer/id/{id}/edit', 'ManageUserController@viewUpdate');
-Route::post('/premium_customer/id/{id}/update', 'ManageUserController@update');
-Route::get('/premium_customer/id/{id}/destroy', 'ManageUserController@destroy');
-Route::get('/premium_customer/search/{key}', 'ManageUserController@search')->name('customerpremium.search');
+
+Route::get('/portal/premium_customer/id/{id}/destroy', 'ManageUserController@destroy');
+Route::get('/portal/premium_customer/search/{key}', 'ManageUserController@search')->name('customerpremium.search');
 
 //--------------------------Customers Free Logic-------------------//
-Route::post('/free_customer/store', 'ManageUserController@store');
-Route::get('/free_customer/id/{id}/edit', 'ManageUserController@viewUpdate');
-Route::post('/free_customer/id/{id}/update', 'ManageUserController@update');
-Route::get('/free_customer/id/{id}/destroy', 'ManageUserController@destroy');
-Route::get('/free_customer/search/{key}', 'ManageUserController@search')->name('customerfree.search');
+
+Route::get('/portal/free_customer/id/{id}/destroy', 'ManageUserController@destroy');
+Route::get('/portal/free_customer/search/{key}', 'ManageUserController@search')->name('customerfree.search');
 
 //--------------------------Manage All Customer-------------------------//
- Route::get('/free_customers','ManageUserController@show')->name('customers.free');
- Route::get('/premium_customers','ManageUserController@showpremium')->name('customers.premium');
- Route::get('/usermanage', 'ManageUserController@manage')->name('customers');
+ Route::get('/portal/customer/free','ManageUserController@viewCustomerFree')->name('customers.free');
+ Route::get('/portal/customer/premium','ManageUserController@viewCustomerVip')->name('customers.premium');
+ Route::get('/portal/customers', 'ManageUserController@viewCustomers')->name('customers');
+
+ Route::get('/portal/customers/print', 'ManageUserController@print')->name('customers.print');
+
+
+// Customer logic
+
+ Route::get('/portal/customer/{id}/delete', 'ManageUserController@viewCustomers')->name('customer.destroy');
+ Route::get('/portal/customer/search/{key}', 'ManageUserController@search')->name('customer.search');
+ Route::get('/portal/customer/free/search/{key}', 'ManageUserController@searchFree')->name('customer.free.search');
+ Route::get('/portal/customer/premium/search/{key}', 'ManageUserController@searchPremium')->name('customer.premium.search');
 
 //--------------------------Manage All Member------------------------------//
-Route::get('/membermanage', 'ManageMemberController@manage')->name('members');
+Route::get('/portal/members', 'ManageMemberController@viewMembers')->name('members');
 
 //--------------------------Members All Logic-----------------------------//
-Route::post('/member/store', 'ManageMemberController@store');
-Route::get('/member/id/{id}/edit', 'ManageMemberController@viewUpdate');
-Route::post('/member/id/{id}/update', 'ManageMemberController@update');
-Route::get('/member/id/{id}/destroy', 'ManageMemberController@destroy');
-Route::get('/member/search/{key}', 'ManageMemberController@search')->name('member.search');
+Route::post('/portal/member/store', 'ManageMemberController@store')->name('member.store');
+Route::get('/portal/member/id/{id}/edit', 'ManageMemberController@viewUpdate')->name('member.edit');
+Route::post('/portal/member/id/{id}/update', 'ManageMemberController@update')->name('member.update');
+Route::get('/portal/member/id/{id}/destroy', 'ManageMemberController@destroy')->name('member.destroy');
+Route::get('/portal/member/search/{key}', 'ManageMemberController@search')->name('member.search');
 
+// Customer
 
- // ------------------------- Landing---------------------------- //
-Route::get('/', function() {
+// ------------------------- Homepage Customer---------------------------- //
+
+Route::get('/', 'HomeController@index')->name('home');
+
+// ------------------------- Movie Details ---------------------------- //
+
+Route::get('/movie/id/{id}', 'PageController@viewMovie')->name('movie.details');
+Route::get('/movie/lists', 'PageController@viewMovieLists')->name('movie.lists');
+Route::get('/movie/id/{id}/cart', 'PageController@viewMovieCart')->name('movie.carts');
+
+Route::post('/movie/id/{id}/checkout', 'PageController@checkout')->name('movie.checkout');
+Route::post('/movie/checkout/process', 'PageController@checkoutProcess')->name('movie.checkout.process');
+Route::get('/movie/transactions', 'PageController@viewTransactions')->name('movie.transactions');
+
+// ------------------------- Print ---------------------------- //
+
+Route::get('/movie/ticket/id/{id}/print', 'PageController@print')->name('movie.ticket.print');
+
+// ------------------------- TEXT ---------------------------- //
+// ------------------------- TEXT ---------------------------- //
+
+// Portal
+
+// ------------------------- Landing Portal---------------------------- //
+
+Route::get('/portal', function() {
     return view('portal.index');
-});
+})->name('portal');
 
-//-------------------------Manage User--------------------------//
+// ------------------------- Homepage Employee ---------------------------- //
 
+Route::get('/portal/home', 'PortalController@index')->name('portal.dashboard');
 
-// ------------------------- Cinema---------------------------- //
-Route::get('/cinemas', 'CinemaController@viewCinemas')->name('cinemas');
-Route::get('/cinema/id/{id}/edit', 'CinemaController@viewUpdate');
+// ------------------------- Cinema ---------------------------- //
+
+Route::get('/portal/cinemas', 'CinemaController@viewCinemas')->name('cinemas');
+Route::get('/portal/cinema/id/{id}/edit', 'CinemaController@viewUpdate')->name('cinema.edit');
 
 // cinemas logic
-Route::post('/cinema/store', 'CinemaController@store');
-Route::post('/cinema/id/{id}/update', 'CinemaController@update');
-Route::get('/cinema/id/{id}/destroy', 'CinemaController@destroy');
-Route::get('/cinema/search/{key}', 'CinemaController@search')->name('cinema.search');
+Route::post('/portal/cinema/store', 'CinemaController@store')->name('cinema.store');
+Route::post('/portal/cinema/id/{id}/update', 'CinemaController@update')->name('cinema.update');
+Route::get('/portal/cinema/id/{id}/destroy', 'CinemaController@destroy')->name('cinema.destroy');
+Route::get('/portal/cinema/search/{key}', 'CinemaController@search')->name('cinema.search');
 
 // ------------------------- Cinema Seats ---------------------------- //
 
-Route::get('/cinema/id/{id}/seats', 'SeatController@viewSeats')->name('seats');
-Route::get('/cinema/seat/id/{id}/edit', 'SeatController@viewUpdate');
+Route::get('/portal/cinema/id/{id}/seats', 'SeatController@viewSeats')->name('seats');
+Route::get('/portal/cinema/seat/id/{id}/edit', 'SeatController@viewUpdate')->name('seat.edit');
 
 // cinema seats logic
-Route::post('/cinema/id/{id}/seat/store', 'SeatController@store');
-Route::post('/cinema/seat/id/{id}/update', 'SeatController@update');
-Route::get('/cinema/seat/id/{id}/destroy', 'SeatController@destroy');
+Route::post('/portal/cinema/id/{id}/seat/store', 'SeatController@store')->name('seat.store');
+Route::post('/portal/cinema/seat/id/{id}/update', 'SeatController@update')->name('seat.update');
+Route::get('/portal/cinema/seat/id/{id}/destroy', 'SeatController@destroy')->name('seat.destroy');
 
 // ------------------------- Films ---------------------------- //
 
-Route::get('/films', 'FilmController@viewFilms')->name('films');
-Route::get('/film/id/{id}', 'FilmController@viewFilmDetails');
-Route::get('/film/id/{id}/edit', 'FilmController@viewUpdate');
+Route::get('/portal/films', 'FilmController@viewFilms')->name('films');
+Route::get('/portal/film/id/{id}', 'FilmController@viewFilmDetails')->name('film.detail');
+Route::get('/portal/film/id/{id}/edit', 'FilmController@viewUpdate')->name('film.edit');
 
 // films logic
-Route::post('/film/store', 'FilmController@store');
-Route::post('/film/id/{id}/update', 'FilmController@update');
-Route::get('/film/id/{id}/destroy', 'FilmController@destroy');
-Route::get('/film/search/{key}', 'FilmController@search')->name('film.search');
+Route::post('/portal/film/store', 'FilmController@store')->name('film.store');
+Route::post('/portal/film/id/{id}/update', 'FilmController@update')->name('film.update');
+Route::get('/portal/film/id/{id}/destroy', 'FilmController@destroy')->name('film.destroy');
+Route::get('/portal/film/search/{key}', 'FilmController@search')->name('film.search');
 
 // ------------------------- Ticket ---------------------------- //
 
-Route::get('/tickets', 'TicketController@viewTickets')->name('tickets');
-Route::get('/ticket/id/{id}/edit', 'TicketController@viewUpdate');
+Route::get('/portal/tickets', 'TicketController@viewTickets')->name('tickets');
+Route::get('/portal/ticket/id/{id}/edit', 'TicketController@viewUpdate')->name('ticket.edit');
 
 // tickets logic
-Route::post('/ticket/store', 'TicketController@store');
-Route::get('/ticket/id/{id}/destroy', 'TicketController@destroy');
+Route::post('/portal/ticket/store', 'TicketController@store')->name('ticket.store');
+Route::get('/portal/ticket/id/{id}/destroy', 'TicketController@destroy')->name('ticket.destroy');
 
 // ------------------------- Promote Code ---------------------------- //
 
-Route::get('/codes', 'CodeController@viewCodes')->name('codes');
-Route::get('/code/id/{id}/edit', 'CodeController@viewUpdate');
+Route::get('/portal/codes', 'CodeController@viewCodes')->name('codes');
+Route::get('/portal/code/id/{id}/edit', 'CodeController@viewUpdate')->name('code.edit');
 
 // promote code logic
-Route::post('/code/store', 'CodeController@store');
-Route::post('/code/id/{id}/update', 'CodeController@update');
-Route::get('/code/id/{id}/destroy', 'CodeController@destroy');
-Route::get('/code/search/{key}', 'CodeController@search')->name('code.search');
+Route::post('/portal/code/store', 'CodeController@store')->name('code.store');
+Route::post('/portal/code/id/{id}/update', 'CodeController@update')->name('code.update');
+Route::get('/portal/code/id/{id}/destroy', 'CodeController@destroy')->name('code.destroy');
+Route::get('/portal/code/search/{key}', 'CodeController@search')->name('code.search');
 
 // ------------------------- Transaction ---------------------------- //
 
-Route::get('/transactions', 'TransactController@viewTransactions')->name('transactions');
-Route::get('/transaction/add', 'TransactController@add')->name('transaction.add');
-Route::get('/transaction/id/{id}/details', 'TransactController@viewDetails');
+Route::get('/portal/transactions', 'TransactController@viewTransactions')->name('transactions');
+Route::get('/portal/transaction/add', 'TransactController@add')->name('transaction.add');
+Route::get('/portal/transaction/id/{id}/details', 'TransactController@viewDetails');
 
 // promote code logic
-Route::get('/transaction/id/{id}/destroy', 'TransactController@destroy');
-Route::get('/transaction/search/{key}', 'TransactController@search')->name('transaction.search');
+Route::get('/portal/transaction/id/{id}/destroy', 'TransactController@destroy');
+Route::get('/portal/transaction/search/{key}', 'TransactController@search')->name('transaction.search');
 
 // ------------------------- Text Here ---------------------------- //
 
@@ -134,9 +158,11 @@ Route::get('/transaction/search/{key}', 'TransactController@search')->name('tran
 
 // CUSTOMER
 
-Route::get('/dash', function() {
-    return view('home.index');
-});
+// Route::get('/')
+
+// Route::get('/dash', function() {
+//     return view('home.index');
+// });
 
 // Route::get('/login_consumer', function() {
 //     return view('home.pages.login');
@@ -180,7 +206,7 @@ Route::get('/dash', function() {
 
 // // PORTAL
 
-// Route::get('/portalEmployee', function() {
+// Route::get('/portal', function() {
 //     return view('portal.pages.index');
 // })->name('home');
 
@@ -262,5 +288,7 @@ Route::get('/dash', function() {
 //     return view('portal.pages.login');
 // })->name('login');
 
-
+// Route::get('/logout', function() {
+//     return view('portal.index');
+// })->name('user_settings');
 
