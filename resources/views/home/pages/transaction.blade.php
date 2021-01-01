@@ -31,8 +31,10 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">No</th>
+                            <th class="text-center" scope="col">No</th>
                             <th scope="col">Film</th>
+                            <th scope="col">Cinema</th>
+                            <th scope="col">Seat</th>
                             <th scope="col">Broadcast date</th>
                             <th scope="col">Transaction Date</th>
                             <th scope="col" class="text-center">Action</th>
@@ -41,8 +43,10 @@
                     <tbody>
                     @foreach ($transact as $key => $item)
                         <tr>
-                            <td>#</td>
+                            <td class="text-center">{{ $transact->firstItem() + $key }}</td>
                             <td>{{ $item->ticket->film->item_name }}</td>
+                            <td>{{ $item->ticket->cinema->cinema_name }}</td>
+                            <td>{{ $item->seat->seat_name }}</td>
                             <td>{{ $item->ticket->broadcast_date }}</td>
                             <td>{{ $item->created_at }}</td>
                             <td class="text-center">
@@ -52,6 +56,12 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div class="page">
+                    <span class="float-right">
+                        {{ $transact->links() }}
+                    </span>
+                </div>
             </div>
         </section>
         <!-- section -->

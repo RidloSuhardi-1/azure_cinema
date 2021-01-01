@@ -11,7 +11,7 @@
                 <div class="top-block-content">
                     <h1 class="section-title">Thank You</h1>
                     <div class="page-breadcrumbs">
-                        <a class="content-link" href="#">Home</a>
+                        <a class="content-link" href="{{ route('home') }}">Home</a>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
 
                         <span>Transaction</span>
@@ -27,9 +27,9 @@
                 <div class="status-entity">
                     <div class="entity-icon"><i class="fas fa-shopping-basket opacity-20"></i></div>
                     <h4 class="entity-title">THANK YOU FOR YOUR PURCHASES</h4>
-                    <p class="entity-text">We hope you are satisfied with your purchase</p>
+                    <p class="entity-text">You can download your ticket <a href="{{ route('movie.transactions') }}">here</a>, We hope you are satisfied with your purchase</p>
                     <div class="entity-actions">
-                        <a class="btn btn-theme" href="#">Back To Homepage</a>
+                        <a class="btn btn-theme" href="{{ route('home') }}">Back To Homepage</a>
                     </div>
                 </div>
             </div>

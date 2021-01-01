@@ -103,14 +103,15 @@
                                             <div class="col-4">
                                                 <table class="table table-bordered">
                                                     @php $seatKey = $ticket->cinema->seats; @endphp
+
                                                     @foreach($seatKey AS $key => $item)
                                                         @if ($key % 4 == 0)
                                                             <tr>
                                                         @endif
 
                                                         <td class="text-center">
-                                                            <input type="checkbox" class="check-seats" name="seat-selection[]" value="{{ $item['seat_id'] }}" />
-                                                            {{ $item['seat_name'] }}
+                                                                <input type="checkbox" class="check-seats" name="seat-selection[]" value="{{ $item['seat_id'] }}" />
+                                                                {{ $item['seat_name'] }}
                                                         </td>
 
                                                         @if (($key + 1) % 4 == 0)
