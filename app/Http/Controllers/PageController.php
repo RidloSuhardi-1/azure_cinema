@@ -37,11 +37,12 @@ class PageController extends Controller
      public function viewMovieCart(Request $request, $id)
      {
          $decrypt_id = \Crypt::decrypt($id);
+         $transact = Transaction::all();
          $tickets = Ticket::find($decrypt_id);
 
          $total = $request['qty'] * $tickets->price;
 
-         $data = array('ticket' => $tickets, 'qty' => $request['qty'], 'total' => $total);
+         $data = array('ticket' => $tickets, 'transact' => $transact, 'qty' => $request['qty'], 'total' => $total);
 
          return view('home.pages.movie_cart')->with($data);
      }
@@ -57,7 +58,7 @@ class PageController extends Controller
 
      public function viewTransactions()
      {
-         $transact = Transaction::where('customer_id', Session('id'))->get();
+         $transact = Transaction::where('customer_id', Session('id'))->paginate(5);
 
          $data = array('transact' => $transact);
 
@@ -171,7 +172,11 @@ class PageController extends Controller
         $ticket->stock -=  $input['qty'];
         $ticket->save();
 
-        return redirect()->route('home');
+        return redirect()->route('movie.transactions.thankyou');
+    }
+
+    public function viewThanks() {
+        return view('home.pages.thankyou');
     }
 
     public function print($id)
